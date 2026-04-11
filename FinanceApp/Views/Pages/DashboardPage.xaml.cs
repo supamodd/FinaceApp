@@ -86,7 +86,7 @@ namespace FinanceApp.Views.Pages
 
             int mode = cmbChartMode?.SelectedIndex ?? 0;
 
-            if (mode == 0) // Доходы vs Расходы
+            if (mode == 0)                                                                          // Доходы vs Расходы
             {
                 decimal income = transactions.Where(t => t.Type == "Income").Sum(t => t.Amount);
                 decimal expense = transactions.Where(t => t.Type == "Expense").Sum(t => t.Amount);
@@ -112,7 +112,7 @@ namespace FinanceApp.Views.Pages
                     };
                 }
             }
-            else // По категориям
+            else                            // По категориям
             {
                 var grouped = transactions
                     .Where(t => t.Category != null)

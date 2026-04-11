@@ -1,0 +1,31 @@
+﻿<Window x:Class="FinanceApp.Views.EditProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Редактирование профиля" Height="553" Width="474"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+    <Grid Margin="20">
+        <StackPanel>
+            <!-- Аватар -->
+            <Border Width="120" Height="120" CornerRadius="60" BorderBrush="#CCCCCC" BorderThickness="2" HorizontalAlignment="Center">
+                <Image x:Name="imgAvatar" Stretch="UniformToFill"/>
+            </Border>
+            <Button Content="📸 Изменить фото" Width="155" Margin="0 10" Click="BtnChangePhoto_Click"/>
+
+            <TextBlock Text="ФИО" Margin="0 15 0 5"/>
+            <TextBox x:Name="txtFullName" Height="40" FontSize="15"/>
+
+            <TextBlock Text="Email" Margin="0 15 0 5"/>
+            <TextBox x:Name="txtEmail" Height="40" FontSize="15"/>
+
+            <TextBlock Text="Новый пароль (оставьте пустым, если не хотите менять)" Margin="0 15 0 5"/>
+            <PasswordBox x:Name="txtNewPassword" Height="40" FontSize="15"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 30 0 0">
+                <Button Content="Отмена" Width="110" Height="45" Margin="0 0 10 0" Click="BtnCancel_Click"/>
+                <Button Content="Сохранить изменения" Width="160" Height="45" 
+                        Background="#4CAF50" Foreground="White" Click="BtnSave_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

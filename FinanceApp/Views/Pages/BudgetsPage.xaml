@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="FinanceApp.Views.Pages.BudgetsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок + кнопка добавить -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 20">
+                <TextBlock Text="Бюджеты по категориям" FontSize="28" FontWeight="Bold"/>
+                <Button Content="+ Добавить бюджет" 
+                        Width="180" Height="40"
+                        Margin="30 0 0 0"
+                        Click="AddBudget_Click"
+                        Background="#4CAF50" Foreground="White" FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- Список бюджетов -->
+            <DataGrid x:Name="dgBudgets" Grid.Row="1"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          CanUserSortColumns="True"
+          RowHeight="50">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Категория" Binding="{Binding Budget.Category.Name}" Width="220"/>
+                    <DataGridTextColumn Header="Лимит" 
+                            Binding="{Binding Budget.PlannedAmount, StringFormat={}{0:N0} ₽}" 
+                            Width="140"/>
+                    <DataGridTemplateColumn Header="Прогресс" Width="300">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Value="{Binding ProgressPercent}" 
+                                 Height="25" 
+                                 Background="#E0E0E0"
+                                 Foreground="#4CAF50"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Потрачено / Лимит" 
+                            Binding="{Binding SpentInfo}" 
+                            Width="180"/>
+                    <DataGridTextColumn Header="Статус" 
+                            Binding="{Binding Status}" 
+                            Width="140"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

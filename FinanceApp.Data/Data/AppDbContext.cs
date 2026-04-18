@@ -12,7 +12,6 @@ namespace FinanceApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Абсолютный путь, чтобы база точно создавалась в папке запуска
             var dbPath = System.IO.Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "finance.db");
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
@@ -30,8 +29,6 @@ namespace FinanceApp.Data
                 .WithMany(u => u.Transactions)
                 .HasForeignKey(t => t.UserId);
         }
-
-        // ← Добавили этот метод — он автоматически создаст все таблицы
         public void EnsureCreated()
         {
             Database.EnsureCreated();

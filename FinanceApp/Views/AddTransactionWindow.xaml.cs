@@ -17,13 +17,12 @@ namespace FinanceApp.Views
         public AddTransactionWindow(FinancialTransaction? transaction = null)
         {
             InitializeComponent();
-
             cmbType.SelectionChanged += CmbType_SelectionChanged;
 
-            // Принудительно создаём стандартные категории при открытии окна
             _categoryService.EnsureDefaultCategoriesExist();
-
             LoadCategories();
+
+            _transactionToEdit = transaction;
 
             if (_transactionToEdit != null)
             {
@@ -33,12 +32,16 @@ namespace FinanceApp.Views
                 txtAmount.Text = _transactionToEdit.Amount.ToString();
                 txtDescription.Text = _transactionToEdit.Description;
             }
+
+            cmbDayOfMonth.ItemsSource = Enumerable.Range(1, 31);
+            cmbDayOfMonth.SelectedIndex = DateTime.Now.Day - 1;
+
+            dpStartDate.SelectedDate = DateTime.Now;
         }
 
         private void LoadCategories(string? typeFilter = null)
         {
             var allCategories = _categoryService.GetAll();
-
             if (typeFilter == "Income")
                 cmbCategory.ItemsSource = allCategories.Where(c => c.Type == "Income").ToList();
             else if (typeFilter == "Expense")
@@ -58,6 +61,14 @@ namespace FinanceApp.Views
             }
         }
 
+        // ==================== ЛОГИКА ПОВТОРЯЮЩИХСЯ ТРАНЗАКЦИЙ ====================
+        private void ChkRecurring_Changed(object sender, RoutedEventArgs e)
+        {
+            RecurringPanel.Visibility = chkRecurring.IsChecked == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             if (App.CurrentUser == null) return;
@@ -74,8 +85,8 @@ namespace FinanceApp.Views
                 return;
             }
 
+                                                     // Сохраняем обычную транзакцию
             var transaction = _transactionToEdit ?? new FinancialTransaction();
-
             transaction.Date = dpDate.SelectedDate ?? DateTime.Now;
             transaction.Type = ((ComboBoxItem)cmbType.SelectedItem).Tag?.ToString() ?? "Expense";
             transaction.Amount = amount;
@@ -87,6 +98,27 @@ namespace FinanceApp.Views
                 _transactionService.Add(transaction);
             else
                 _transactionService.Update(transaction);
+
+                                                // Если пользователь отметил "Повторять"
+            if (chkRecurring.IsChecked == true)
+            {
+                var recurring = new RecurringTransaction
+                {
+                    UserId = App.CurrentUser.Id,
+                    CategoryId = selectedCategory.Id,
+                    Amount = amount,
+                    Type = transaction.Type,
+                    Description = txtDescription.Text,
+                    Frequency = ((ComboBoxItem)cmbFrequency.SelectedItem).Tag?.ToString() ?? "Monthly",
+                    StartDate = dpStartDate.SelectedDate ?? DateTime.Now,
+                    NextOccurrence = dpStartDate.SelectedDate ?? DateTime.Now,
+                    DayOfMonth = cmbDayOfMonth.SelectedIndex + 1,
+                    IsActive = true
+                };
+
+                MessageBox.Show("Повторяющаяся транзакция сохранена в базу!",
+                              "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
             DialogResult = true;
             Close();

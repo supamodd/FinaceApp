@@ -2,35 +2,68 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="Новая операция" 
-        Height="554" Width="497"
+        Title="Новая операция"
+        Height="680" Width="497"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
-    <Grid Margin="25">
-        <StackPanel>
-            <TextBlock Text="Дата" Margin="0 0 0 5"/>
-            <DatePicker x:Name="dpDate" SelectedDate="{x:Static sys:DateTime.Now}" Height="40"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="25">
+            <StackPanel>
+                <TextBlock Text="Дата" Margin="0 0 0 5"/>
+                <DatePicker x:Name="dpDate" SelectedDate="{x:Static sys:DateTime.Now}" Height="40"/>
 
-            <TextBlock Text="Тип операции" Margin="0 15 0 5"/>
-            <ComboBox x:Name="cmbType" Height="40">
-                <ComboBoxItem Content="Расход" IsSelected="True" Tag="Expense"/>
-                <ComboBoxItem Content="Доход" Tag="Income"/>
-            </ComboBox>
+                <TextBlock Text="Тип операции" Margin="0 15 0 5"/>
+                <ComboBox x:Name="cmbType" Height="40">
+                    <ComboBoxItem Content="Расход" IsSelected="True" Tag="Expense"/>
+                    <ComboBoxItem Content="Доход" Tag="Income"/>
+                </ComboBox>
 
-            <TextBlock Text="Сумма" Margin="0 15 0 5"/>
-            <TextBox x:Name="txtAmount" Height="40" FontSize="16"/>
+                <TextBlock Text="Сумма" Margin="0 15 0 5"/>
+                <TextBox x:Name="txtAmount" Height="40" FontSize="16"/>
 
-            <TextBlock Text="Категория" Margin="0 15 0 5"/>
-            <ComboBox x:Name="cmbCategory" Height="40" DisplayMemberPath="Name"/>
+                <TextBlock Text="Категория" Margin="0 15 0 5"/>
+                <ComboBox x:Name="cmbCategory" Height="40" DisplayMemberPath="Name"/>
 
-            <TextBlock Text="Описание" Margin="0 15 0 5"/>
-            <TextBox x:Name="txtDescription" Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
+                <TextBlock Text="Описание" Margin="0 15 0 5"/>
+                <TextBox x:Name="txtDescription" Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 30 0 0">
-                <Button Content="Отмена" Width="110" Height="45" Margin="0 0 10 0" Click="BtnCancel_Click"/>
-                <Button Content="Сохранить" Width="160" Height="45" 
-                        Background="#4CAF50" Foreground="White" Click="BtnSave_Click"/>
+                <!-- ==================== ПОВТОРЯЮЩИЕСЯ ТРАНЗАКЦИИ ==================== -->
+                <CheckBox x:Name="chkRecurring" Content="🔄 Повторять эту транзакцию автоматически" 
+                          Margin="0 20 0 8" FontSize="14" 
+                          Checked="ChkRecurring_Changed" Unchecked="ChkRecurring_Changed"/>
+
+                <StackPanel x:Name="RecurringPanel" Visibility="Collapsed" Margin="0 0 0 20">
+                    <TextBlock Text="Частота повторения" Margin="0 0 0 5" FontSize="14"/>
+                    <ComboBox x:Name="cmbFrequency" Height="40" FontSize="14">
+                        <ComboBoxItem Content="Ежемесячно" IsSelected="True" Tag="Monthly"/>
+                        <ComboBoxItem Content="Еженедельно" Tag="Weekly"/>
+                        <ComboBoxItem Content="Раз в 2 недели" Tag="BiWeekly"/>
+                        <ComboBoxItem Content="Ежегодно" Tag="Yearly"/>
+                    </ComboBox>
+
+                    <Grid Margin="0 12 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0 0 10 0">
+                            <TextBlock Text="Дата начала" Margin="0 0 0 5" FontSize="14"/>
+                            <DatePicker x:Name="dpStartDate" Height="40"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="10 0 0 0">
+                            <TextBlock Text="День месяца" Margin="0 0 0 5" FontSize="14"/>
+                            <ComboBox x:Name="cmbDayOfMonth" Height="40" FontSize="14"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <!-- ===================================================================== -->
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 30 0 0">
+                    <Button Content="Отмена" Width="110" Height="45" Margin="0 0 10 0" Click="BtnCancel_Click"/>
+                    <Button Content="Сохранить" Width="160" Height="45"
+                            Background="#4CAF50" Foreground="White" Click="BtnSave_Click"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Window>

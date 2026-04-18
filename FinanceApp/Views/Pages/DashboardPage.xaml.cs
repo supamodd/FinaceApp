@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,15 +22,14 @@ namespace FinanceApp.Views.Pages
         public DashboardPage()
         {
             InitializeComponent();
-
-            if (cmbChartMode?.SelectedIndex < 0) cmbChartMode.SelectedIndex = 0;
-            if (cmbPeriod?.SelectedIndex < 0) cmbPeriod.SelectedIndex = 0;
-
             this.Loaded += DashboardPage_Loaded;
         }
 
         private void DashboardPage_Loaded(object sender, RoutedEventArgs e)
         {
+            if (cmbChartMode?.SelectedIndex < 0) cmbChartMode.SelectedIndex = 0;
+            if (cmbPeriod?.SelectedIndex < 0) cmbPeriod.SelectedIndex = 0;
+
             LoadDashboard();
         }
 
@@ -48,11 +48,10 @@ namespace FinanceApp.Views.Pages
             txtExpense.Text = $"-{totalExpense:N0} ₽";
 
             if (dgLastTransactions != null)
-            {
                 dgLastTransactions.ItemsSource = transactions.OrderByDescending(t => t.Date).Take(8).ToList();
-            }
 
             UpdatePieChart();
+            UpdateMonthlyChart();
         }
 
         private List<FinancialTransaction> GetFilteredTransactions()
@@ -62,7 +61,6 @@ namespace FinanceApp.Views.Pages
             var all = _service.GetAll(App.CurrentUser.Id);
             var selectedItem = cmbPeriod?.SelectedItem as ComboBoxItem;
             string tag = selectedItem?.Tag?.ToString() ?? "ThisMonth";
-
             DateTime now = DateTime.Now;
 
             return tag switch
@@ -80,39 +78,32 @@ namespace FinanceApp.Views.Pages
 
         private void UpdatePieChart()
         {
-            if (pieChart == null || App.CurrentUser == null) return;
+            if (pieChart == null) return;
 
             var transactions = GetFilteredTransactions();
-
             int mode = cmbChartMode?.SelectedIndex ?? 0;
 
-            if (mode == 0)                                                                          // Доходы vs Расходы
+            if (mode == 0)                                                                                              // Доходы vs Расходы
             {
                 decimal income = transactions.Where(t => t.Type == "Income").Sum(t => t.Amount);
                 decimal expense = transactions.Where(t => t.Type == "Expense").Sum(t => t.Amount);
 
+                var series = new ISeries[]
+                {
+                    new PieSeries<double> { Name = "Доходы", Values = new[] { (double)income }, Fill = new SolidColorPaint(SKColors.LimeGreen) },
+                    new PieSeries<double> { Name = "Расходы", Values = new[] { (double)expense }, Fill = new SolidColorPaint(SKColors.Red) }
+                };
+
                 if (_showPercent && (income + expense) > 0)
                 {
                     double total = (double)(income + expense);
-                    double incomeP = (double)income / total * 100;
-                    double expenseP = (double)expense / total * 100;
+                    series[0].Name = $"Доходы ({(double)income / total * 100:F1}%)";
+                    series[1].Name = $"Расходы ({(double)expense / total * 100:F1}%)";
+                }
 
-                    pieChart.Series = new ISeries[]
-                    {
-                        new PieSeries<double> { Name = $"Доходы ({incomeP:F1}%)", Values = new[] { (double)income }, Fill = new SolidColorPaint(SKColors.LimeGreen) },
-                        new PieSeries<double> { Name = $"Расходы ({expenseP:F1}%)", Values = new[] { (double)expense }, Fill = new SolidColorPaint(SKColors.Red) }
-                    };
-                }
-                else
-                {
-                    pieChart.Series = new ISeries[]
-                    {
-                        new PieSeries<double> { Name = "Доходы", Values = new[] { (double)income }, Fill = new SolidColorPaint(SKColors.LimeGreen) },
-                        new PieSeries<double> { Name = "Расходы", Values = new[] { (double)expense }, Fill = new SolidColorPaint(SKColors.Red) }
-                    };
-                }
+                pieChart.Series = series;
             }
-            else                            // По категориям
+            else                                                            // По категориям
             {
                 var grouped = transactions
                     .Where(t => t.Category != null)
@@ -131,8 +122,44 @@ namespace FinanceApp.Views.Pages
             }
         }
 
-        // ==================== Обработчики ====================
+        private void UpdateMonthlyChart()
+        {
+            if (monthlyChart == null) return;
 
+            var transactions = GetFilteredTransactions();
+
+            var monthlyData = transactions
+                .GroupBy(t => new { t.Date.Year, t.Date.Month })
+                .Select(g => new
+                {
+                    Month = new DateTime(g.Key.Year, g.Key.Month, 1),
+                    Income = g.Where(t => t.Type == "Income").Sum(t => t.Amount),
+                    Expense = g.Where(t => t.Type == "Expense").Sum(t => t.Amount)
+                })
+                .OrderBy(x => x.Month)
+                .ToList();
+
+            var labels = monthlyData.Select(x => x.Month.ToString("MMM yy")).ToArray();
+
+            monthlyChart.XAxes = new[] { new Axis { Labels = labels } };
+            monthlyChart.Series = new ISeries[]
+            {
+                new ColumnSeries<decimal>
+                {
+                    Name = "Доходы",
+                    Values = monthlyData.Select(x => x.Income).ToArray(),
+                    Fill = new SolidColorPaint(SKColors.LimeGreen)
+                },
+                new ColumnSeries<decimal>
+                {
+                    Name = "Расходы",
+                    Values = monthlyData.Select(x => x.Expense).ToArray(),
+                    Fill = new SolidColorPaint(SKColors.Red)
+                }
+            };
+        }
+
+        // ==================== Обработчики ====================
         private void CmbChartMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdatePieChart();
@@ -152,19 +179,18 @@ namespace FinanceApp.Views.Pages
                 _customFrom = null;
                 _customTo = null;
             }
-
             LoadDashboard();
         }
 
         private void DpFrom_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _customFrom = dpFrom.SelectedDate;
+            _customFrom = dpFrom?.SelectedDate;
             LoadDashboard();
         }
 
         private void DpTo_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _customTo = dpTo.SelectedDate;
+            _customTo = dpTo?.SelectedDate;
             LoadDashboard();
         }
 

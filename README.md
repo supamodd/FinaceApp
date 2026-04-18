@@ -16,10 +16,9 @@
 
 ## 🛠 Технологии
 
-- **.NET 8** (или .NET 6/7 — уточни свою версию)
+- **.NET 8**
 - **WPF** (Windows Presentation Foundation)
 - **Entity Framework Core** + SQLite
-- **MVVM** (в процессе перехода)
 - **C#**
 
 ## 🚀 Как запустить

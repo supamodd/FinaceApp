@@ -45,7 +45,7 @@ namespace FinanceApp.Views
                     MembersGrid.ItemsSource = members;
 
                     var myRole = members.FirstOrDefault(m => m.UserId == _currentUserId)?.Role;
-                    RoleText.Text = $"Ваша роль: {myRole}";
+                    RoleText.Text = $"Ваша роль: {GetRoleDisplayName(myRole ?? FinanceApp.Data.Models.FamilyRole.Member)}";
                 }
                 else
                 {
@@ -57,6 +57,17 @@ namespace FinanceApp.Views
             {
                 MessageBox.Show("Ошибка загрузки: " + ex.Message);
             }
+        }
+        private string GetRoleDisplayName(FinanceApp.Data.Models.FamilyRole role)
+        {
+            var field = role.GetType().GetField(role.ToString());
+            if (field != null)
+            {
+                var attribute = field.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false)
+                    .FirstOrDefault() as System.ComponentModel.DataAnnotations.DisplayAttribute;
+                return attribute?.Name ?? role.ToString();
+            }
+            return role.ToString();
         }
 
         private async void CreateFamily_Click(object sender, RoutedEventArgs e)

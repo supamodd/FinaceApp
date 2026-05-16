@@ -1,7 +1,9 @@
-﻿using System;
+﻿using FinanceApp.Data;
+using FinanceApp.Services;
+using FinanceApp.Views.Pages;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using FinanceApp.Views.Pages;
 
 namespace FinanceApp.Views
 {
@@ -44,6 +46,18 @@ namespace FinanceApp.Views
             var loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
+        }
+
+        // Временный тест (потом удалишь)
+        private async void TestFamilyButton_Click(object sender, RoutedEventArgs e)
+        {
+            var context = new AppDbContext();                    // создаём контекст
+            var familyService = new FamilyService(context);      // создаём сервис
+
+            // Создаём тестовую семью (замени 1 на ID твоего текущего пользователя)
+            var family = await familyService.CreateFamilyAsync(1, "Тестовая Семья");
+
+            MessageBox.Show($"Семья создана! ID = {family.Id}, Название: {family.Name}");
         }
     }
 }

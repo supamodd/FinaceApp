@@ -5,6 +5,10 @@ namespace FinanceApp.Data
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
+        public AppDbContext() { }
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<FinancialTransaction> Transactions { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
@@ -12,6 +16,7 @@ namespace FinanceApp.Data
         public DbSet<RecurringTransaction> RecurringTransactions { get; set; } = null!;
         public DbSet<Family> Families { get; set; }
         public DbSet<FamilyMember> FamilyMembers { get; set; }
+        public DbSet<FamilyInvitation> FamilyInvitations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -10,6 +10,8 @@ namespace FinanceApp.Data
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Budget> Budgets { get; set; } = null!;
         public DbSet<RecurringTransaction> RecurringTransactions { get; set; } = null!;
+        public DbSet<Family> Families { get; set; }
+        public DbSet<FamilyMember> FamilyMembers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

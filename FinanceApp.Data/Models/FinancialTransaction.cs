@@ -20,6 +20,11 @@ namespace FinanceApp.Data.Models
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
+        public int? FamilyId { get; set; }           // null = личная транзакция
+        public bool IsFamilyTransaction { get; set; } 
+
+        public Family? Family { get; set; }
+
         public string TypeDisplay => Type == "Income" ? "Доход" : "Расход";
     }
 }

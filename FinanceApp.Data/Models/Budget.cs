@@ -16,6 +16,10 @@ namespace FinanceApp.Data.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
+        public int? FamilyId { get; set; }   // null = личный бюджет
+
+        public Family? Family { get; set; }
+
         public int UserId { get; set; }
         public User User { get; set; } = null!;
     }

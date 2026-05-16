@@ -7,7 +7,6 @@
         WindowStartupLocation="CenterScreen"
         Background="#F4F6F9"
         Icon="/Views/finicon.ico">
-
     <!-- Стили кнопок меню -->
     <Window.Resources>
         <Style x:Key="MenuButton" TargetType="Button">
@@ -22,31 +21,26 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
         <!-- Боковое меню -->
         <Border Background="#2C3E50" Padding="10">
             <StackPanel>
                 <Image Source="/logo.png" Width="180" Height="80" Margin="15 30 15 40" HorizontalAlignment="Center"/>
-
                 <Button Content="🏠 Dashboard" Style="{StaticResource MenuButton}" Click="Dashboard_Click"/>
                 <Button Content="📋 Операции" Style="{StaticResource MenuButton}" Click="Transactions_Click"/>
                 <Button Content="🏷️ Категории" Style="{StaticResource MenuButton}" Click="Categories_Click"/>
                 <Button Content="📊 Отчёты" Style="{StaticResource MenuButton}" Click="Reports_Click"/>
-
-                <!-- ✅ НОВАЯ КНОПКА -->
+                <!-- ✅ НОВАЯ КНОПКА СЕМЬЯ -->
+                <Button Content="👨‍👩‍👧 Семья" Style="{StaticResource MenuButton}" Click="Family_Click"/>
                 <Button Content="💰 Бюджеты" Style="{StaticResource MenuButton}" Click="Budgets_Click"/>
-
                 <Separator Margin="20 40 20 20" Background="#34495E"/>
                 <Button Content="🚪 Выйти" Background="#E74C3C" Foreground="White" Height="50" Click="Logout_Click"/>
             </StackPanel>
         </Border>
-
         <!-- Основная область -->
         <Grid Grid.Column="1">
             <!-- Шапка с мини-профилем -->
@@ -60,7 +54,6 @@
                     <local:MiniProfileControl Margin="717,5,10,5"/>
                 </Grid>
             </Border>
-
             <!-- Контент (страницы) -->
             <Frame x:Name="ContentFrame" Grid.Column="0" Margin="0,80,0,0" NavigationUIVisibility="Hidden" Background="#F8F9FA"/>
         </Grid>

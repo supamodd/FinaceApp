@@ -8,11 +8,11 @@ public class Family
 
     [Required, MaxLength(100)]
     public string Name { get; set; } = string.Empty;
-
     public int CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Навигационные свойства
+    public int CreatedById { get; set; }     // ← Добавь это
     public User CreatedBy { get; set; } = null!;
     public ICollection<FamilyMember> Members { get; set; } = new List<FamilyMember>();
     public ICollection<FinancialTransaction> Transactions { get; set; } = new List<FinancialTransaction>();

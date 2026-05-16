@@ -1,6 +1,8 @@
 ﻿using FinanceApp.Data;
 using FinanceApp.Services;
+using FinanceApp.Views;
 using FinanceApp.Views.Pages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +60,11 @@ namespace FinanceApp.Views
             var family = await familyService.CreateFamilyAsync(1, "Тестовая Семья");
 
             MessageBox.Show($"Семья создана! ID = {family.Id}, Название: {family.Name}");
+        }
+
+        private void Family_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(new FamilyPage());
         }
     }
 }

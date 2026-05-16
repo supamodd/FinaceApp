@@ -16,6 +16,13 @@ public class FamilyService
     // === СОЗДАТЬ СЕМЬЮ ===
     public async Task<Family> CreateFamilyAsync(int userId, string familyName)
     {
+        // Проверяем, существует ли пользователь
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+        {
+            throw new Exception("Пользователь не найден в базе");
+        }
+
         var family = new Family
         {
             Name = familyName.Trim(),
@@ -26,7 +33,6 @@ public class FamilyService
         _context.Families.Add(family);
         await _context.SaveChangesAsync();
 
-        // Добавляем создателя как Owner
         var member = new FamilyMember
         {
             FamilyId = family.Id,
@@ -161,5 +167,24 @@ public class FamilyService
         return await _context.Families
             .Include(f => f.Members)
             .FirstOrDefaultAsync(f => f.Id == familyId);
+    }
+
+    public async Task<bool> RemoveMemberAsync(int familyId, int targetUserId, int currentUserId)
+    {
+        var currentMember = await _context.FamilyMembers
+            .FirstOrDefaultAsync(fm => fm.FamilyId == familyId && fm.UserId == currentUserId);
+
+        if (currentMember == null || currentMember.Role > FamilyRole.Admin)
+            return false; // Только Owner и Admin
+
+        var targetMember = await _context.FamilyMembers
+            .FirstOrDefaultAsync(fm => fm.FamilyId == familyId && fm.UserId == targetUserId);
+
+        if (targetMember == null || targetMember.Role == FamilyRole.Owner)
+            return false; // Нельзя исключить Owner
+
+        _context.FamilyMembers.Remove(targetMember);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

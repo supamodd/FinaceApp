@@ -31,6 +31,19 @@ namespace FinanceApp.Data
                 .HasOne(t => t.User)
                 .WithMany(u => u.Transactions)
                 .HasForeignKey(t => t.UserId);
+
+            modelBuilder.Entity<FamilyMember>()
+                .HasKey(fm => new { fm.FamilyId, fm.UserId });
+
+            modelBuilder.Entity<FamilyMember>()
+                .HasOne(fm => fm.Family)
+                .WithMany(f => f.Members)
+                .HasForeignKey(fm => fm.FamilyId);
+
+            modelBuilder.Entity<FamilyMember>()
+                .HasOne(fm => fm.User)
+                .WithMany()
+                .HasForeignKey(fm => fm.UserId);
         }
         public void EnsureCreated()
         {

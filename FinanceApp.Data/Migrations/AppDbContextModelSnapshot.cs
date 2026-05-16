@@ -44,7 +44,7 @@ namespace FinanceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Budgets");
+                    b.ToTable("Budgets", (string)null);
                 });
 
             modelBuilder.Entity("FinanceApp.Data.Models.Category", b =>
@@ -67,7 +67,7 @@ namespace FinanceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("FinanceApp.Data.Models.FinancialTransaction", b =>
@@ -102,7 +102,7 @@ namespace FinanceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("FinanceApp.Data.Models.RecurringTransaction", b =>
@@ -153,7 +153,7 @@ namespace FinanceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecurringTransactions");
+                    b.ToTable("RecurringTransactions", (string)null);
                 });
 
             modelBuilder.Entity("FinanceApp.Data.Models.User", b =>
@@ -184,7 +184,7 @@ namespace FinanceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("FinanceApp.Data.Models.Budget", b =>

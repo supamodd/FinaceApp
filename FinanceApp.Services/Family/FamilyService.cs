@@ -88,7 +88,7 @@ public class FamilyService
         if (invitation == null)
             return false;
 
-        // Проверяем, не состоит ли уже пользователь в этой семье
+        // Проверка на нахождение юзера в сеьме
         var alreadyMember = await _context.FamilyMembers
             .AnyAsync(fm => fm.FamilyId == invitation.FamilyId && fm.UserId == userId);
 

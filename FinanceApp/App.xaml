@@ -143,6 +143,140 @@
                 <Setter Property="Width" Value="8"/>
                 <Setter Property="Background" Value="Transparent"/>
             </Style>
+
+            <!-- ═══════════════════════════════════════════════════ -->
+            <!--  ТЁМНЫЙ КАЛЕНДАРЬ                                  -->
+            <!-- ═══════════════════════════════════════════════════ -->
+
+            <Style TargetType="Calendar">
+                <Setter Property="Background" Value="#1E1A3A"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+
+            <Style TargetType="CalendarButton">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#3D3670"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#8B5CF6"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="CalendarDayButton">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="MinWidth" Value="32"/>
+                <Setter Property="MinHeight" Value="32"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#3D3670"/>
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#8B5CF6"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                    <Trigger Property="IsToday" Value="True">
+                        <Setter Property="Background" Value="#2A2650"/>
+                        <Setter Property="Foreground" Value="#8B5CF6"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Trigger>
+                    <Trigger Property="IsBlackedOut" Value="True">
+                        <Setter Property="Foreground" Value="#3D3670"/>
+                    </Trigger>
+                    <Trigger Property="IsInactive" Value="True">
+                        <Setter Property="Foreground" Value="#4A4570"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="CalendarItem">
+                <Setter Property="Background" Value="#1E1A3A"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CalendarItem">
+                            <Border Background="#1E1A3A" BorderBrush="#30FFFFFF" 
+                                    BorderThickness="1" CornerRadius="8" Padding="4">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" Margin="4 4 4 8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button x:Name="PART_PreviousButton" Grid.Column="0"
+                                                Content="◀" FontSize="10" Width="28" Height="28"
+                                                Background="Transparent" Foreground="#94A3B8" 
+                                                BorderThickness="0" Cursor="Hand"/>
+
+                                        <Button x:Name="PART_HeaderButton" Grid.Column="1"
+                                                HorizontalAlignment="Center"
+                                                Background="Transparent" Foreground="#F1F5F9"
+                                                FontSize="15" FontWeight="SemiBold"
+                                                BorderThickness="0" Cursor="Hand"/>
+
+                                        <Button x:Name="PART_NextButton" Grid.Column="2"
+                                                Content="▶" FontSize="10" Width="28" Height="28"
+                                                Background="Transparent" Foreground="#94A3B8" 
+                                                BorderThickness="0" Cursor="Hand"/>
+                                    </Grid>
+
+                                    <Grid x:Name="PART_MonthView" Grid.Row="1" Visibility="Visible">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                    </Grid>
+
+                                    <Grid x:Name="PART_YearView" Grid.Row="1" Visibility="Hidden">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

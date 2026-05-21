@@ -5,10 +5,12 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/GlassTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Конвертер -->
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
 
             <Style TargetType="Window">
                 <Setter Property="FontFamily" Value="Segoe UI, Arial"/>
@@ -145,10 +147,7 @@
                 <Setter Property="Background" Value="Transparent"/>
             </Style>
 
-            <!-- ═══════════════════════════════════════════════════ -->
-            <!--  ТЁМНЫЙ КАЛЕНДАРЬ                                  -->
-            <!-- ═══════════════════════════════════════════════════ -->
-
+            <!-- Тёмный календарь -->
             <Style TargetType="Calendar">
                 <Setter Property="Background" Value="#1E1A3A"/>
                 <Setter Property="Foreground" Value="#F1F5F9"/>
@@ -213,31 +212,26 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-
                                     <Grid Grid.Row="0" Margin="4 4 4 8">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-
                                         <Button x:Name="PART_PreviousButton" Grid.Column="0"
                                                 Content="◀" FontSize="10" Width="28" Height="28"
                                                 Background="Transparent" Foreground="#94A3B8" 
                                                 BorderThickness="0" Cursor="Hand"/>
-
                                         <Button x:Name="PART_HeaderButton" Grid.Column="1"
                                                 HorizontalAlignment="Center"
                                                 Background="Transparent" Foreground="#F1F5F9"
                                                 FontSize="15" FontWeight="SemiBold"
                                                 BorderThickness="0" Cursor="Hand"/>
-
                                         <Button x:Name="PART_NextButton" Grid.Column="2"
                                                 Content="▶" FontSize="10" Width="28" Height="28"
                                                 Background="Transparent" Foreground="#94A3B8" 
                                                 BorderThickness="0" Cursor="Hand"/>
                                     </Grid>
-
                                     <Grid x:Name="PART_MonthView" Grid.Row="1" Visibility="Visible">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -258,7 +252,6 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                     </Grid>
-
                                     <Grid x:Name="PART_YearView" Grid.Row="1" Visibility="Hidden">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>

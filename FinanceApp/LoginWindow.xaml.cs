@@ -13,8 +13,20 @@ namespace FinanceApp.Views
         public LoginWindow()
         {
             InitializeComponent();
-            // Allow dragging the borderless window
-            this.MouseLeftButtonDown += (s, e) => { if (e.ChangedButton == MouseButton.Left) DragMove(); };
+
+            // Fade-in анимация при открытии
+            this.Opacity = 0;
+            this.Loaded += (s, e) =>
+            {
+                var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(400))
+                {
+                    EasingFunction = new System.Windows.Media.Animation.CubicEase
+                    {
+                        EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut
+                    }
+                };
+                this.BeginAnimation(OpacityProperty, fadeIn);
+            };
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)

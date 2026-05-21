@@ -58,13 +58,14 @@
                     </StackPanel>
 
                     <!-- Navigation -->
+                    <!-- Navigation -->
                     <StackPanel Grid.Row="1">
-                        <Button Content="🏠  Dashboard" Style="{StaticResource MenuButton}" Click="Dashboard_Click"/>
-                        <Button Content="📋  Операции" Style="{StaticResource MenuButton}" Click="Transactions_Click"/>
-                        <Button Content="🏷️  Категории" Style="{StaticResource MenuButton}" Click="Categories_Click"/>
-                        <Button Content="💰  Бюджеты" Style="{StaticResource MenuButton}" Click="Budgets_Click"/>
-                        <Button Content="📊  Отчёты" Style="{StaticResource MenuButton}" Click="Reports_Click"/>
-                        <Button Content="👨‍👩‍👧  Семья" Style="{StaticResource MenuButton}" Click="Family_Click"/>
+                        <Button x:Name="btnDashboard" Content="🏠  Dashboard" Style="{StaticResource MenuButton}" Click="Dashboard_Click"/>
+                        <Button x:Name="btnTransactions" Content="📋  Операции" Style="{StaticResource MenuButton}" Click="Transactions_Click"/>
+                        <Button x:Name="btnCategories" Content="🏷️  Категории" Style="{StaticResource MenuButton}" Click="Categories_Click"/>
+                        <Button x:Name="btnBudgets" Content="💰  Бюджеты" Style="{StaticResource MenuButton}" Click="Budgets_Click"/>
+                        <Button x:Name="btnReports" Content="📊  Отчёты" Style="{StaticResource MenuButton}" Click="Reports_Click"/>
+                        <Button x:Name="btnFamily" Content="👨‍👩‍👧  Семья" Style="{StaticResource MenuButton}" Click="Family_Click"/>
                     </StackPanel>
 
                     <!-- Bottom: Logout -->

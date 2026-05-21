@@ -69,17 +69,62 @@
     </LinearGradientBrush>
 
     <!-- ── Glass Card Style ──────────────────────────────────── -->
+    <!-- ── Glass Card Style — с hover анимацией ──────────────── -->
     <Style x:Key="GlassCard" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource GlassWhiteBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="24"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.15" Color="#8B5CF6"/>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="1.01" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="1.01" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                         To="0.35" Duration="0:0:0.2"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                         To="45" Duration="0:0:0.2"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="1" Duration="0:0:0.2"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="1" Duration="0:0:0.2"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                         To="0.15" Duration="0:0:0.2"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                         To="30" Duration="0:0:0.2"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
     </Style>
 
     <!-- ── Solid Card Style ──────────────────────────────────── -->
@@ -217,6 +262,7 @@
         </Setter>
     </Style>
 
+    <!-- Sidebar Menu Button — с подсветкой активной страницы -->
     <Style x:Key="MenuButton" TargetType="Button">
         <Setter Property="Height" Value="52"/>
         <Setter Property="Margin" Value="12 3"/>
@@ -225,18 +271,46 @@
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Tag" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" CornerRadius="12" Background="Transparent"
-                            Padding="20 0">
-                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid>
+                        <!-- Фиолетовая полоска слева (видна только для активной) -->
+                        <Border x:Name="ActiveIndicator" Width="4" HorizontalAlignment="Left" 
+                                CornerRadius="0 4 4 0" Background="#8B5CF6"
+                                Margin="-12 8 0 8" Visibility="Collapsed"/>
+                        <!-- Фон кнопки -->
+                        <Border x:Name="border" CornerRadius="12" Background="Transparent"
+                                Padding="20 0" Margin="4 0 0 0">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
+                        <!-- Hover -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource GlassWhiteBrush}"/>
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#15FFFFFF"/>
+                                </Setter.Value>
+                            </Setter>
                             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
                         </Trigger>
+                        <!-- Active state (Tag = "Active") -->
+                        <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Active">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#258B5CF6"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="ActiveIndicator" Property="Visibility" Value="Visible"/>
+                            <Setter Property="Foreground">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#F1F5F9"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

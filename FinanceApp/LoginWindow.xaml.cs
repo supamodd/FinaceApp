@@ -86,5 +86,10 @@ namespace FinanceApp.Views
                                 "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void txtLogin_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
+        }
     }
 }

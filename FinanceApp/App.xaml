@@ -20,7 +20,6 @@
                 <Setter Property="FontFamily" Value="Segoe UI"/>
             </Style>
 
-            <!-- ═══ TextBox ═══ -->
             <Style TargetType="TextBox">
                 <Setter Property="Background" Value="#2A2650"/>
                 <Setter Property="Foreground" Value="#F1F5F9"/>
@@ -32,7 +31,6 @@
                 <Setter Property="SelectionBrush" Value="#8B5CF6"/>
             </Style>
 
-            <!-- ═══ PasswordBox ═══ -->
             <Style TargetType="PasswordBox">
                 <Setter Property="Background" Value="#2A2650"/>
                 <Setter Property="Foreground" Value="#F1F5F9"/>
@@ -44,7 +42,6 @@
                 <Setter Property="SelectionBrush" Value="#8B5CF6"/>
             </Style>
 
-            <!-- ═══ ComboBox — полный тёмный шаблон ═══ -->
             <Style TargetType="ComboBox">
                 <Setter Property="Foreground" Value="#F1F5F9"/>
                 <Setter Property="FontSize" Value="14"/>
@@ -102,7 +99,6 @@
                 </Setter>
             </Style>
 
-            <!-- ═══ ComboBoxItem ═══ -->
             <Style TargetType="ComboBoxItem">
                 <Setter Property="Background" Value="#1E1A3A"/>
                 <Setter Property="Foreground" Value="#F1F5F9"/>
@@ -120,7 +116,6 @@
                 </Style.Triggers>
             </Style>
 
-            <!-- ═══ DatePicker ═══ -->
             <Style TargetType="DatePicker">
                 <Setter Property="Background" Value="#2A2650"/>
                 <Setter Property="Foreground" Value="#F1F5F9"/>
@@ -137,7 +132,6 @@
                 <Setter Property="Padding" Value="4 2"/>
             </Style>
 
-            <!-- ═══ CheckBox ═══ -->
             <Style TargetType="CheckBox">
                 <Setter Property="Foreground" Value="#94A3B8"/>
                 <Setter Property="FontSize" Value="14"/>

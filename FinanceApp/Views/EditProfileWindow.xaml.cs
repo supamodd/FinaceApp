@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
 using FinanceApp.Data.Models;
 using FinanceApp.Services;
 using Microsoft.Win32;
@@ -20,6 +22,11 @@ namespace FinanceApp.Views
 
             if (!string.IsNullOrEmpty(user.AvatarPath) && System.IO.File.Exists(user.AvatarPath))
                 imgAvatar.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(user.AvatarPath));
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) DragMove();
         }
 
         private void BtnChangePhoto_Click(object sender, RoutedEventArgs e)
@@ -49,7 +56,6 @@ namespace FinanceApp.Views
                 _currentUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(txtNewPassword.Password);
             }
 
-            // Сохраняем изменения в БД
             using var context = new FinanceApp.Data.AppDbContext();
             context.Users.Update(_currentUser);
             context.SaveChanges();

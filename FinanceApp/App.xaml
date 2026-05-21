@@ -4,13 +4,29 @@
              ShutdownMode="OnLastWindowClose">
 
     <Application.Resources>
-        <Style TargetType="Button">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="12 8"/>
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/GlassTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <SolidColorBrush x:Key="PrimaryColor" Color="#2C3E50"/>
-        <SolidColorBrush x:Key="AccentColor" Color="#3498DB"/>
+            <!-- Global font -->
+            <Style TargetType="Window">
+                <Setter Property="FontFamily" Value="Segoe UI, Arial"/>
+            </Style>
+
+            <!-- Default Button override -->
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="16 10"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+            </Style>
+
+            <!-- Thin scrollbar -->
+            <Style TargetType="ScrollBar">
+                <Setter Property="Width" Value="8"/>
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

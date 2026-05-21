@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using FinanceApp.Data.Models;
 using FinanceApp.Services.Categories;
 using FinanceApp.Services.Transactions;
@@ -39,6 +40,11 @@ namespace FinanceApp.Views
             dpStartDate.SelectedDate = DateTime.Now;
         }
 
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) DragMove();
+        }
+
         private void LoadCategories(string? typeFilter = null)
         {
             var allCategories = _categoryService.GetAll();
@@ -61,7 +67,6 @@ namespace FinanceApp.Views
             }
         }
 
-        // ==================== ЛОГИКА ПОВТОРЯЮЩИХСЯ ТРАНЗАКЦИЙ ====================
         private void ChkRecurring_Changed(object sender, RoutedEventArgs e)
         {
             RecurringPanel.Visibility = chkRecurring.IsChecked == true
@@ -85,7 +90,6 @@ namespace FinanceApp.Views
                 return;
             }
 
-                                                     // Сохраняем обычную транзакцию
             var transaction = _transactionToEdit ?? new FinancialTransaction();
             transaction.Date = dpDate.SelectedDate ?? DateTime.Now;
             transaction.Type = ((ComboBoxItem)cmbType.SelectedItem).Tag?.ToString() ?? "Expense";
@@ -99,7 +103,6 @@ namespace FinanceApp.Views
             else
                 _transactionService.Update(transaction);
 
-                                                // Если пользователь отметил "Повторять"
             if (chkRecurring.IsChecked == true)
             {
                 var recurring = new RecurringTransaction

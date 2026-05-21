@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using FinanceApp.Services;
 using FinanceApp.Views;
 
@@ -12,6 +13,13 @@ namespace FinanceApp.Views
         public LoginWindow()
         {
             InitializeComponent();
+            // Allow dragging the borderless window
+            this.MouseLeftButtonDown += (s, e) => { if (e.ChangedButton == MouseButton.Left) DragMove(); };
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)

@@ -5,46 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
 
-    <Grid Margin="20">
+    <Grid Margin="32 28">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Заголовок и кнопки -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 15">
-            <TextBlock Text="📋 Все операции" FontSize="28" FontWeight="Bold" VerticalAlignment="Center"/>
-            <Button Content="➕ Добавить операцию" 
-                    Background="#4CAF50" Foreground="White" FontSize="16"
-                    Padding="20 8" Margin="30 0 0 0"
+        <!-- Header + Action Buttons -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 20">
+            <TextBlock Text="📋 Все операции" Style="{StaticResource PageTitle}" VerticalAlignment="Center"/>
+            <Button Content="➕ Добавить" 
+                    Style="{StaticResource SuccessButton}"
+                    Margin="30 0 10 0" Padding="24 0"
                     Click="BtnAdd_Click"/>
-            <Button Content="✏️ Редактировать" Background="#2196F3" Foreground="White" 
-        Padding="15 8" Margin="10 0 0 0" Click="BtnEdit_Click"/>
-            <Button Content="🗑 Удалить" Background="#F44336" Foreground="White" 
-        Padding="15 8" Margin="10 0 0 0" Click="BtnDelete_Click"/>
+            <Button Content="✏️ Редактировать" 
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0 0 10 0" Padding="20 0"
+                    Click="BtnEdit_Click"/>
+            <Button Content="🗑 Удалить" 
+                    Style="{StaticResource DangerButton}"
+                    Padding="20 0"
+                    Click="BtnDelete_Click"/>
         </StackPanel>
 
-        <!-- Фильтры (пока простые) -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 0 0 10">
-            <ComboBox x:Name="cmbTypeFilter" Width="150" Margin="0 0 10 0" SelectedIndex="0">
-                <ComboBoxItem Content="Все типы"/>
-                <ComboBoxItem Content="Доход"/>
-                <ComboBoxItem Content="Расход"/>
-            </ComboBox>
-            <Button Content="🔄 Обновить" Click="BtnRefresh_Click" Width="120"/>
-        </StackPanel>
+        <!-- Filters -->
+        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="16" Margin="0 0 0 16">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="cmbTypeFilter" Width="170" Height="42" Margin="0 0 12 0" SelectedIndex="0"
+                          FontSize="14">
+                    <ComboBoxItem Content="Все типы"/>
+                    <ComboBoxItem Content="Доход"/>
+                    <ComboBoxItem Content="Расход"/>
+                </ComboBox>
+                <Button Content="🔄 Обновить" Style="{StaticResource GhostButton}" 
+                        Height="42" Padding="20 0"
+                        Click="BtnRefresh_Click"/>
+            </StackPanel>
+        </Border>
 
-        <!-- Таблица операций -->
-        <DataGrid x:Name="dgTransactions" Grid.Row="2" AutoGenerateColumns="False" 
-                  IsReadOnly="True" SelectionMode="Single" CanUserResizeColumns="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="100"/>
-                <DataGridTextColumn Header="Тип" Binding="{Binding TypeDisplay}" Width="90"/>
-                <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="100"/>
-                <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="150"/>
-                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="300"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Transactions Table -->
+        <Border Grid.Row="2" Style="{StaticResource GlassCard}">
+            <DataGrid x:Name="dgTransactions" 
+                      Style="{StaticResource ModernDataGrid}"
+                      ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                      CellStyle="{StaticResource ModernDataGridCell}"
+                      RowStyle="{StaticResource ModernDataGridRow}"
+                      SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="110"/>
+                    <DataGridTextColumn Header="Тип" Binding="{Binding TypeDisplay}" Width="100"/>
+                    <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="120"/>
+                    <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="170"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </UserControl>

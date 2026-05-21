@@ -1,18 +1,23 @@
 ﻿using FinanceApp.Data.Models;
-using System.Security.AccessControl;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace FinanceApp.Views
 {
     public partial class AddCategoryWindow : Window
     {
-        private string _selectedColor = "#FF5722";
+        private string _selectedColor = "#8B5CF6";
 
         public AddCategoryWindow()
         {
             InitializeComponent();
             UpdateColorPreview();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) DragMove();
         }
 
         private void TxtColor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -61,6 +66,5 @@ namespace FinanceApp.Views
             DialogResult = false;
             Close();
         }
-
     }
 }

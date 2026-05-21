@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using FinanceApp.Data.Models;
 using FinanceApp.Services;
 using FinanceApp.Services.Categories;
@@ -18,22 +19,24 @@ namespace FinanceApp.Views
             Loaded += AddBudgetWindow_Loaded;
         }
 
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) DragMove();
+        }
+
         private async void AddBudgetWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Загружаем категории (только расходы)
-            var allCategories = _categoryService.GetAll();           // ← твой метод
+            var allCategories = _categoryService.GetAll();
             var expenseCategories = allCategories.Where(c => c.Type == "Expense").ToList();
 
             cmbCategory.ItemsSource = expenseCategories;
             cmbCategory.DisplayMemberPath = "Name";
 
-            // Месяцы
             cmbMonth.ItemsSource = Enumerable.Range(1, 12)
                 .Select(m => new { Value = m, Name = new DateTime(2025, m, 1).ToString("MMMM") });
             cmbMonth.DisplayMemberPath = "Name";
             cmbMonth.SelectedIndex = DateTime.Now.Month - 1;
 
-            // Год
             cmbYear.ItemsSource = Enumerable.Range(DateTime.Now.Year - 1, 3);
             cmbYear.SelectedItem = DateTime.Now.Year;
         }

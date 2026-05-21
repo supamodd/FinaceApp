@@ -3,77 +3,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
+        <Grid Margin="32 28">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Фильтр по периоду -->
-        <GroupBox Grid.Row="0" Header="Период отчёта" Margin="0 0 0 15">
-            <StackPanel Orientation="Horizontal" Margin="15">
-                <StackPanel Margin="0 0 30 0">
-                    <TextBlock Text="С:" Margin="0 0 0 5"/>
-                    <DatePicker x:Name="dpFrom" Width="180"/>
-                </StackPanel>
+            <!-- Header -->
+            <TextBlock Grid.Row="0" Text="📊 Отчёты" Style="{StaticResource PageTitle}" Margin="0 0 0 20"/>
 
-                <StackPanel Margin="0 0 30 0">
-                    <TextBlock Text="По:" Margin="0 0 0 5"/>
-                    <DatePicker x:Name="dpTo" Width="180"/>
-                </StackPanel>
+            <!-- Period Filter -->
+            <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="20" Margin="0 0 0 20">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0 0 24 0">
+                        <TextBlock Text="С:" Style="{StaticResource Label}"/>
+                        <DatePicker x:Name="dpFrom" Width="180" Height="42"/>
+                    </StackPanel>
 
-                <Button Content="🔍 Показать отчёт" 
-                        Background="#2196F3" Foreground="White" FontSize="16"
-                        Padding="25 10" Margin="20 25 0 0"
-                        Click="BtnShowReport_Click"/>
+                    <StackPanel Margin="0 0 24 0">
+                        <TextBlock Text="По:" Style="{StaticResource Label}"/>
+                        <DatePicker x:Name="dpTo" Width="180" Height="42"/>
+                    </StackPanel>
 
-                <Button Content="📤 Экспорт в Excel" 
-                        Background="#4CAF50" Foreground="White" FontSize="16"
-                        Padding="25 10" Margin="15 25 0 0"
-                        Click="BtnExportExcel_Click"/>
-            </StackPanel>
-        </GroupBox>
+                    <Button Content="🔍 Показать отчёт" 
+                            Style="{StaticResource PrimaryButton}"
+                            Padding="24 0" Margin="12 18 0 0"
+                            Click="BtnShowReport_Click"/>
 
-        <!-- Итоги -->
-        <Grid Grid.Row="1" Margin="0 0 0 15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Border Background="#4CAF50" CornerRadius="8" Margin="5" Padding="15">
-                <StackPanel>
-                    <TextBlock Text="Доходы" Foreground="White" FontSize="16"/>
-                    <TextBlock x:Name="txtTotalIncome" Text="+0 ₽" Foreground="White" FontSize="24" FontWeight="Bold"/>
+                    <Button Content="📤 Экспорт в Excel" 
+                            Style="{StaticResource SuccessButton}"
+                            Padding="24 0" Margin="12 18 0 0"
+                            Click="BtnExportExcel_Click"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#F44336" CornerRadius="8" Margin="5" Padding="15">
-                <StackPanel>
-                    <TextBlock Text="Расходы" Foreground="White" FontSize="16"/>
-                    <TextBlock x:Name="txtTotalExpense" Text="-0 ₽" Foreground="White" FontSize="24" FontWeight="Bold"/>
-                </StackPanel>
-            </Border>
+            <!-- Summary Cards -->
+            <Grid Grid.Row="2" Margin="0 0 0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <Border Background="#2C3E50" CornerRadius="8" Margin="5" Padding="15">
-                <StackPanel>
-                    <TextBlock Text="Баланс" Foreground="White" FontSize="16"/>
-                    <TextBlock x:Name="txtTotalBalance" Text="0 ₽" Foreground="White" FontSize="24" FontWeight="Bold"/>
-                </StackPanel>
+                <Border Grid.Column="0" CornerRadius="16" Margin="0 0 8 0" Padding="20"
+                        Background="{StaticResource GlassWhiteBrush}"
+                        BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Доходы" Foreground="{StaticResource GreenBrush}" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock x:Name="txtTotalIncome" Text="+0 ₽" 
+                                   Foreground="{StaticResource GreenBrush}" FontSize="28" FontWeight="Bold" Margin="0 6 0 0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" CornerRadius="16" Margin="4 0" Padding="20"
+                        Background="{StaticResource GlassWhiteBrush}"
+                        BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Расходы" Foreground="{StaticResource RedBrush}" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock x:Name="txtTotalExpense" Text="-0 ₽" 
+                                   Foreground="{StaticResource RedBrush}" FontSize="28" FontWeight="Bold" Margin="0 6 0 0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" CornerRadius="16" Margin="8 0 0 0" Padding="20"
+                        Background="{StaticResource GlassWhiteBrush}"
+                        BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Баланс" Foreground="{StaticResource AccentLightBrush}" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock x:Name="txtTotalBalance" Text="0 ₽" 
+                                   Foreground="{StaticResource TextPrimaryBrush}" FontSize="28" FontWeight="Bold" Margin="0 6 0 0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Report Table -->
+            <Border Grid.Row="3" Style="{StaticResource GlassCard}">
+                <DataGrid x:Name="dgReport" 
+                          Style="{StaticResource ModernDataGrid}"
+                          ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                          CellStyle="{StaticResource ModernDataGridCell}"
+                          RowStyle="{StaticResource ModernDataGridRow}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="110"/>
+                        <DataGridTextColumn Header="Тип" Binding="{Binding TypeDisplay}" Width="100"/>
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="120"/>
+                        <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="180"/>
+                        <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Border>
         </Grid>
-
-        <!-- Таблица отчёта -->
-        <DataGrid x:Name="dgReport" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="100"/>
-                <DataGridTextColumn Header="Тип" Binding="{Binding TypeDisplay}" Width="90"/>
-                <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="110"/>
-                <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="180"/>
-                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
+  

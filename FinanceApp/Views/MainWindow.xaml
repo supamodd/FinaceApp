@@ -10,127 +10,132 @@
         AllowsTransparency="True"
         Icon="/Views/finicon.ico">
 
-    <Border CornerRadius="20" ClipToBounds="True">
-        <Border.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#0D0B1A" Offset="0"/>
-                <GradientStop Color="#151229" Offset="0.5"/>
-                <GradientStop Color="#1E1A3A" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.Background>
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.6" Color="#000000"/>
-        </Border.Effect>
+    <!-- Outer wrapper with margin so shadow and corners aren't clipped -->
+    <Border Margin="10">
+        <Border CornerRadius="20" ClipToBounds="True">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#0D0B1A" Offset="0"/>
+                    <GradientStop Color="#151229" Offset="0.5"/>
+                    <GradientStop Color="#1E1A3A" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.6" Color="#000000"/>
+            </Border.Effect>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid x:Name="RootGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- ═══════════════════════════════════════════════ -->
-            <!--  SIDEBAR                                        -->
-            <!-- ═══════════════════════════════════════════════ -->
-            <Border CornerRadius="20 0 0 20" Padding="16 0">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#151229" Offset="0"/>
-                        <GradientStop Color="#0D0B1A" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Border.BorderBrush>
-                    <SolidColorBrush Color="#20FFFFFF"/>
-                </Border.BorderBrush>
-                <Border.BorderThickness>0 0 1 0</Border.BorderThickness>
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Logo + Title -->
-                    <StackPanel Grid.Row="0" Margin="8 30 8 30">
-                        <Image Source="/logo.png" Height="50" HorizontalAlignment="Center"
-                               RenderOptions.BitmapScalingMode="HighQuality" Margin="0 0 0 12"/>
-                        <Border Height="1" Background="{StaticResource DividerBrush}" Margin="20 8"/>
-                    </StackPanel>
-
-                    <!-- Navigation -->
-                    <!-- Navigation -->
-                    <StackPanel Grid.Row="1">
-                        <Button x:Name="btnDashboard" Content="🏠  Dashboard" Style="{StaticResource MenuButton}" Click="Dashboard_Click"/>
-                        <Button x:Name="btnTransactions" Content="📋  Операции" Style="{StaticResource MenuButton}" Click="Transactions_Click"/>
-                        <Button x:Name="btnCategories" Content="🏷️  Категории" Style="{StaticResource MenuButton}" Click="Categories_Click"/>
-                        <Button x:Name="btnBudgets" Content="💰  Бюджеты" Style="{StaticResource MenuButton}" Click="Budgets_Click"/>
-                        <Button x:Name="btnReports" Content="📊  Отчёты" Style="{StaticResource MenuButton}" Click="Reports_Click"/>
-                        <Button x:Name="btnFamily" Content="👨‍👩‍👧  Семья" Style="{StaticResource MenuButton}" Click="Family_Click"/>
-                    </StackPanel>
-
-                    <!-- Bottom: Logout -->
-                    <StackPanel Grid.Row="2" Margin="12 0 12 24">
-                        <Border Height="1" Background="{StaticResource DividerBrush}" Margin="8 0 8 16"/>
-                        <Button Content="🚪  Выйти" Style="{StaticResource DangerButton}" 
-                                Height="44" Click="Logout_Click"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <!-- ═══════════════════════════════════════════════ -->
-            <!--  MAIN CONTENT                                   -->
-            <!-- ═══════════════════════════════════════════════ -->
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="72"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <!-- Top Bar -->
-                <Border Grid.Row="0" Padding="30 0">
+                <!-- ═══════════════════════════════════════════════ -->
+                <!--  SIDEBAR                                        -->
+                <!-- ═══════════════════════════════════════════════ -->
+                <Border Padding="16 0">
                     <Border.Background>
-                        <SolidColorBrush Color="#08FFFFFF"/>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#151229" Offset="0"/>
+                            <GradientStop Color="#0D0B1A" Offset="1"/>
+                        </LinearGradientBrush>
                     </Border.Background>
                     <Border.BorderBrush>
-                        <SolidColorBrush Color="#15FFFFFF"/>
+                        <SolidColorBrush Color="#20FFFFFF"/>
                     </Border.BorderBrush>
-                    <Border.BorderThickness>0 0 0 1</Border.BorderThickness>
+                    <Border.BorderThickness>0 0 1 0</Border.BorderThickness>
+
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <!-- Page title placeholder -->
-                        <TextBlock Grid.Column="0" Text="" FontSize="18" FontWeight="SemiBold" 
-                                   Foreground="{StaticResource TextPrimaryBrush}"
-                                   VerticalAlignment="Center"/>
+                        <!-- Logo + Title -->
+                        <StackPanel Grid.Row="0" Margin="8 30 8 30">
+                            <Image Source="/logo.png" Height="50" HorizontalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality" Margin="0 0 0 12"/>
+                            <Border Height="1" Background="{StaticResource DividerBrush}" Margin="20 8"/>
+                        </StackPanel>
 
-                        <!-- Mini Profile -->
-                        <local:MiniProfileControl Grid.Column="1" VerticalAlignment="Center" Margin="0 0 16 0"/>
+                        <!-- Navigation -->
+                        <StackPanel Grid.Row="1">
+                            <Button x:Name="btnDashboard" Content="🏠  Dashboard" Style="{StaticResource MenuButton}" Click="Dashboard_Click"/>
+                            <Button x:Name="btnTransactions" Content="📋  Операции" Style="{StaticResource MenuButton}" Click="Transactions_Click"/>
+                            <Button x:Name="btnCategories" Content="🏷️  Категории" Style="{StaticResource MenuButton}" Click="Categories_Click"/>
+                            <Button x:Name="btnBudgets" Content="💰  Бюджеты" Style="{StaticResource MenuButton}" Click="Budgets_Click"/>
+                            <Button x:Name="btnReports" Content="📊  Отчёты" Style="{StaticResource MenuButton}" Click="Reports_Click"/>
+                            <Button x:Name="btnFamily" Content="👨‍👩‍👧  Семья" Style="{StaticResource MenuButton}" Click="Family_Click"/>
+                        </StackPanel>
 
-                        <!-- Window controls -->
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button Content="─" Width="36" Height="36" FontSize="12"
-                                    Foreground="#64748B" Background="Transparent" BorderThickness="0"
-                                    Cursor="Hand" Click="BtnMinimize_Click"/>
-                            <Button Content="□" Width="53" Height="36" FontSize="14"
-                                    Foreground="#64748B" Background="Transparent" BorderThickness="0"
-                                    Cursor="Hand" Click="BtnMaximize_Click"/>
-                            <Button Content="✕" Width="45" Height="36" FontSize="12"
-                                    Foreground="#64748B" Background="Transparent" BorderThickness="0"
-                                    Cursor="Hand" Click="BtnClose_Click"/>
+                        <!-- Bottom: Logout -->
+                        <StackPanel Grid.Row="2" Margin="12 0 12 24">
+                            <Border Height="1" Background="{StaticResource DividerBrush}" Margin="8 0 8 16"/>
+                            <Button Content="🚪  Выйти" Style="{StaticResource DangerButton}" 
+                                    Height="44" Click="Logout_Click"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <!-- Content Frame -->
-                <Frame x:Name="ContentFrame" Grid.Row="1" 
-                       NavigationUIVisibility="Hidden" 
-                       Background="Transparent"
-                       Margin="0"/>
+                <!-- ═══════════════════════════════════════════════ -->
+                <!--  MAIN CONTENT                                   -->
+                <!-- ═══════════════════════════════════════════════ -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="72"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Top Bar -->
+                    <Border Grid.Row="0" Padding="30 0">
+                        <Border.Background>
+                            <SolidColorBrush Color="#08FFFFFF"/>
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#15FFFFFF"/>
+                        </Border.BorderBrush>
+                        <Border.BorderThickness>0 0 0 1</Border.BorderThickness>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Page title placeholder -->
+                            <TextBlock Grid.Column="0" Text="" FontSize="18" FontWeight="SemiBold" 
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+
+                            <!-- Mini Profile -->
+                            <local:MiniProfileControl Grid.Column="1" VerticalAlignment="Center" Margin="0 0 16 0"/>
+
+                            <!-- Window controls -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 8 0">
+                                <Button Width="40" Height="40" FontSize="16" Content="─"
+                                        Foreground="{StaticResource TextMutedBrush}" 
+                                        Background="Transparent" BorderThickness="0"
+                                        Cursor="Hand" Click="BtnMinimize_Click" ToolTip="Свернуть"/>
+                                <Button Width="40" Height="40" FontSize="16" Content="□"
+                                        Foreground="{StaticResource TextMutedBrush}" 
+                                        Background="Transparent" BorderThickness="0"
+                                        Cursor="Hand" Click="BtnMaximize_Click" ToolTip="Развернуть"/>
+                                <Button Width="40" Height="40" FontSize="16" Content="✕"
+                                        Foreground="{StaticResource TextMutedBrush}" 
+                                        Background="Transparent" BorderThickness="0"
+                                        Cursor="Hand" Click="BtnClose_Click" ToolTip="Закрыть"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Content Frame -->
+                    <Frame x:Name="ContentFrame" Grid.Row="1" 
+                           NavigationUIVisibility="Hidden" 
+                           Background="Transparent"
+                           Margin="0"/>
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </Border>
 </Window>

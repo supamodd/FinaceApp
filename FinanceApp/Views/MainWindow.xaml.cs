@@ -19,20 +19,23 @@ namespace FinanceApp.Views
             InitializeComponent();
             NavigateTo(new DashboardPage(), btnDashboard);
             this.MouseLeftButtonDown += (s, e) => { if (e.ChangedButton == MouseButton.Left) DragMove(); };
-            ToastNotification.Initialize((Grid)((Border)((Border)this.Content).Child).Child);
+
+            // Инициализация toast-уведомлений после загрузки окна
+            this.Loaded += (s, e) =>
+            {
+                ToastNotification.Initialize(RootGrid);
+            };
         }
 
         // ── Навигация с анимацией ──
         private void NavigateTo(object page, Button activeBtn)
         {
-            // Fade-out
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(120));
             fadeOut.Completed += (s, e) =>
             {
                 ContentFrame.Navigate(page);
                 SetActiveButton(activeBtn);
 
-                // Fade-in + slide up
                 var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
                 var slideUp = new DoubleAnimation(20, 0, TimeSpan.FromMilliseconds(300))
                 {

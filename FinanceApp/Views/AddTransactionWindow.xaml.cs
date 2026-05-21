@@ -40,10 +40,10 @@ namespace FinanceApp.Views
             dpStartDate.SelectedDate = DateTime.Now;
         }
 
-        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
-                DragMove();
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void LoadCategories(string? typeFilter = null)

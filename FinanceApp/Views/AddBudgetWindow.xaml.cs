@@ -19,9 +19,10 @@ namespace FinanceApp.Views
             Loaded += AddBudgetWindow_Loaded;
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) DragMove();
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private async void AddBudgetWindow_Loaded(object sender, RoutedEventArgs e)

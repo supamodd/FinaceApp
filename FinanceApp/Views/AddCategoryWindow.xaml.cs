@@ -15,9 +15,10 @@ namespace FinanceApp.Views
             UpdateColorPreview();
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) DragMove();
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void TxtColor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

@@ -6,8 +6,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Background="Transparent">
 
     <Border CornerRadius="20" ClipToBounds="True">
         <Border.Background>

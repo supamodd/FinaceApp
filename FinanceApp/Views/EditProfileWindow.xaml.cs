@@ -24,9 +24,10 @@ namespace FinanceApp.Views
                 imgAvatar.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(user.AvatarPath));
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) DragMove();
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void BtnChangePhoto_Click(object sender, RoutedEventArgs e)

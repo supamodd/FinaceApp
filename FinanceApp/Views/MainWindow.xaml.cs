@@ -19,6 +19,7 @@ namespace FinanceApp.Views
             InitializeComponent();
             NavigateTo(new DashboardPage(), btnDashboard);
             this.MouseLeftButtonDown += (s, e) => { if (e.ChangedButton == MouseButton.Left) DragMove(); };
+            ToastNotification.Initialize((Grid)((Border)((Border)this.Content).Child).Child);
         }
 
         // ── Навигация с анимацией ──

@@ -104,7 +104,7 @@ namespace FinanceApp.Views
                 };
 
                 await _budgetService.SaveBudgetAsync(budget);
-                MessageBox.Show("Бюджет успешно сохранён!", "Готово");
+                ToastNotification.Show("Готово", "Бюджет успешно сохранён!", ToastType.Success);
             }
 
             DialogResult = true;

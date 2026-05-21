@@ -5,12 +5,14 @@
     <!--  GLASSMORPHISM THEME — Purple Accent                       -->
     <!-- ═══════════════════════════════════════════════════════════ -->
 
+    <!-- ── Color Palette ─────────────────────────────────────── -->
     <Color x:Key="BgDark">#0D0B1A</Color>
     <Color x:Key="BgMedium">#151229</Color>
     <Color x:Key="BgLight">#1E1A3A</Color>
     <Color x:Key="CardBg">#24204A</Color>
     <Color x:Key="GlassWhite">#18FFFFFF</Color>
     <Color x:Key="GlassBorder">#30FFFFFF</Color>
+    <Color x:Key="InputBg">#2A2650</Color>
     <Color x:Key="AccentPurple">#8B5CF6</Color>
     <Color x:Key="AccentPurpleLight">#A78BFA</Color>
     <Color x:Key="AccentPurpleDark">#6D28D9</Color>
@@ -23,12 +25,14 @@
     <Color x:Key="TextMuted">#64748B</Color>
     <Color x:Key="DividerColor">#2A2650</Color>
 
+    <!-- ── Brushes ───────────────────────────────────────────── -->
     <SolidColorBrush x:Key="BgDarkBrush" Color="{StaticResource BgDark}"/>
     <SolidColorBrush x:Key="BgMediumBrush" Color="{StaticResource BgMedium}"/>
     <SolidColorBrush x:Key="BgLightBrush" Color="{StaticResource BgLight}"/>
     <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource CardBg}"/>
     <SolidColorBrush x:Key="GlassWhiteBrush" Color="{StaticResource GlassWhite}"/>
     <SolidColorBrush x:Key="GlassBorderBrush" Color="{StaticResource GlassBorder}"/>
+    <SolidColorBrush x:Key="InputBgBrush" Color="{StaticResource InputBg}"/>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentPurple}"/>
     <SolidColorBrush x:Key="AccentLightBrush" Color="{StaticResource AccentPurpleLight}"/>
     <SolidColorBrush x:Key="AccentDarkBrush" Color="{StaticResource AccentPurpleDark}"/>
@@ -41,6 +45,7 @@
     <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
     <SolidColorBrush x:Key="DividerBrush" Color="{StaticResource DividerColor}"/>
 
+    <!-- Gradient Brushes -->
     <LinearGradientBrush x:Key="PurpleGradient" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#8B5CF6" Offset="0"/>
         <GradientStop Color="#6D28D9" Offset="1"/>
@@ -67,6 +72,7 @@
         <GradientStop Color="#0D0B1A" Offset="1"/>
     </LinearGradientBrush>
 
+    <!-- ── Glass Card Style ──────────────────────────────────── -->
     <Style x:Key="GlassCard" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource GlassWhiteBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}"/>
@@ -80,6 +86,7 @@
         </Setter>
     </Style>
 
+    <!-- ── Solid Card Style ──────────────────────────────────── -->
     <Style x:Key="SolidCard" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource CardBgBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}"/>
@@ -92,6 +99,7 @@
     <!--  BUTTON STYLES                                             -->
     <!-- ═══════════════════════════════════════════════════════════ -->
 
+    <!-- Primary Button (Purple Gradient) -->
     <Style x:Key="PrimaryButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -124,6 +132,7 @@
         </Setter>
     </Style>
 
+    <!-- Success Button (Green) -->
     <Style x:Key="SuccessButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -153,6 +162,7 @@
         </Setter>
     </Style>
 
+    <!-- Danger Button (Red) -->
     <Style x:Key="DangerButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -182,6 +192,7 @@
         </Setter>
     </Style>
 
+    <!-- Ghost Button (transparent with border) -->
     <Style x:Key="GhostButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -214,6 +225,7 @@
         </Setter>
     </Style>
 
+    <!-- Sidebar Menu Button -->
     <Style x:Key="MenuButton" TargetType="Button">
         <Setter Property="Height" Value="52"/>
         <Setter Property="Margin" Value="12 3"/>
@@ -241,7 +253,7 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!--  TEXTBOX STYLE                                             -->
+    <!--  TEXTBOX STYLE  (FIX: solid dark background for visibility) -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <Style x:Key="ModernTextBox" TargetType="TextBox">
         <Setter Property="Height" Value="48"/>
@@ -254,7 +266,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Border x:Name="border" CornerRadius="12"
-                            Background="{StaticResource GlassWhiteBrush}"
+                            Background="{StaticResource InputBgBrush}"
                             BorderBrush="{StaticResource GlassBorderBrush}"
                             BorderThickness="1"
                             Padding="{TemplateBinding Padding}">
@@ -275,6 +287,7 @@
         </Setter>
     </Style>
 
+    <!-- PasswordBox Style (FIX: solid dark background for visibility) -->
     <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -286,7 +299,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="PasswordBox">
                     <Border x:Name="border" CornerRadius="12"
-                            Background="{StaticResource GlassWhiteBrush}"
+                            Background="{StaticResource InputBgBrush}"
                             BorderBrush="{StaticResource GlassBorderBrush}"
                             BorderThickness="1"
                             Padding="{TemplateBinding Padding}">
@@ -398,6 +411,7 @@
         </Style.Triggers>
     </Style>
 
+    <!-- ── Heading Styles ────────────────────────────────────── -->
     <Style x:Key="PageTitle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="30"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -415,6 +429,7 @@
         <Setter Property="Margin" Value="0 0 0 6"/>
     </Style>
 
+    <!-- Keep legacy keys working -->
     <SolidColorBrush x:Key="PrimaryColor" Color="{StaticResource AccentPurple}"/>
     <SolidColorBrush x:Key="AccentColor" Color="{StaticResource AccentPurpleLight}"/>
 

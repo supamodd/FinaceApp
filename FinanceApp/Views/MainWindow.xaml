@@ -114,10 +114,10 @@
                             <Button Content="─" Width="36" Height="36" FontSize="12"
                                     Foreground="#64748B" Background="Transparent" BorderThickness="0"
                                     Cursor="Hand" Click="BtnMinimize_Click"/>
-                            <Button Content="□" Width="36" Height="36" FontSize="14"
+                            <Button Content="□" Width="53" Height="36" FontSize="14"
                                     Foreground="#64748B" Background="Transparent" BorderThickness="0"
                                     Cursor="Hand" Click="BtnMaximize_Click"/>
-                            <Button Content="✕" Width="36" Height="36" FontSize="12"
+                            <Button Content="✕" Width="45" Height="36" FontSize="12"
                                     Foreground="#64748B" Background="Transparent" BorderThickness="0"
                                     Cursor="Hand" Click="BtnClose_Click"/>
                         </StackPanel>

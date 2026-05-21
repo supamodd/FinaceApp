@@ -29,10 +29,13 @@ namespace FinanceApp.Views.Pages
         {
             if (App.CurrentUser == null) return;
 
+            // Пересоздаём сервис чтобы получить свежие данные из БД
+            var budgetService = new BudgetService(new FinanceApp.Data.AppDbContext());
+
             int year = DateTime.Now.Year;
             int month = DateTime.Now.Month;
 
-            var budgets = await _budgetService.GetBudgetsForMonthAsync(App.CurrentUser.Id, year, month);
+            var budgets = await budgetService.GetBudgetsForMonthAsync(App.CurrentUser.Id, year, month);
 
             var budgetViewModels = new List<BudgetViewModel>();
 

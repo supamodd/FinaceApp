@@ -1,0 +1,104 @@
+﻿<Window x:Class="FinanceApp.Views.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ФинХелпер"
+        Height="400" Width="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Icon="/finicon.ico">
+
+    <Border CornerRadius="24" ClipToBounds="True">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0D0B1A" Offset="0"/>
+                <GradientStop Color="#1E1A3A" Offset="0.6"/>
+                <GradientStop Color="#151229" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.5" Color="#000000"/>
+        </Border.Effect>
+
+        <Grid>
+            <!-- Декоративные световые пятна -->
+            <Ellipse Width="350" Height="350" HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Opacity="0.06">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#8B5CF6" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse x:Name="GlowPulse" Width="200" Height="200" 
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Opacity="0">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#8B5CF6" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <!-- Контент -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <!-- Логотип -->
+                <Image x:Name="imgLogo" Source="/logo.png" Height="80" 
+                       HorizontalAlignment="Center" Margin="0 0 0 20"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Opacity="0">
+                    <Image.RenderTransform>
+                        <TranslateTransform x:Name="LogoTranslate" Y="30"/>
+                    </Image.RenderTransform>
+                </Image>
+
+                <!-- Название -->
+                <TextBlock x:Name="txtTitle" Text="ФинХелпер" 
+                           FontSize="36" FontWeight="Bold"
+                           Foreground="#F1F5F9"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 0 8"
+                           Opacity="0">
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform x:Name="TitleTranslate" Y="20"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <!-- Подзаголовок -->
+                <TextBlock x:Name="txtSubtitle" Text="Управление личными финансами" 
+                           FontSize="14"
+                           Foreground="#94A3B8"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 0 40"
+                           Opacity="0"/>
+
+                <!-- Прогресс-бар -->
+                <Grid Width="200" Height="4" HorizontalAlignment="Center">
+                    <Border CornerRadius="2" Background="#2A2650"/>
+                    <Border x:Name="ProgressBar" CornerRadius="2" HorizontalAlignment="Left" Width="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#8B5CF6" Offset="0"/>
+                                <GradientStop Color="#A78BFA" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                </Grid>
+
+                <!-- Версия -->
+                <TextBlock x:Name="txtVersion" Text="v1.0" 
+                           FontSize="11"
+                           Foreground="#4A4570"
+                           HorizontalAlignment="Center"
+                           Margin="0 16 0 0"
+                           Opacity="0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -12,8 +12,8 @@ namespace FinanceApp
         {
             base.OnStartup(e);
 
-            var loginWindow = new LoginWindow();
-            loginWindow.Show();
+            var splashWindow = new SplashWindow();
+            splashWindow.Show();
         }
     }
 }

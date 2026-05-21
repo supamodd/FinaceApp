@@ -11,7 +11,6 @@ namespace FinanceApp.Views.Pages
 {
     public partial class BudgetsPage : UserControl
     {
-        private readonly BudgetService _budgetService = new BudgetService(new FinanceApp.Data.AppDbContext());
         private readonly TransactionService _transactionService = new TransactionService();
 
         public BudgetsPage()
@@ -29,24 +28,17 @@ namespace FinanceApp.Views.Pages
         {
             if (App.CurrentUser == null) return;
 
-            // Пересоздаём сервис чтобы получить свежие данные из БД
             var budgetService = new BudgetService(new FinanceApp.Data.AppDbContext());
-
             int year = DateTime.Now.Year;
             int month = DateTime.Now.Month;
 
             var budgets = await budgetService.GetBudgetsForMonthAsync(App.CurrentUser.Id, year, month);
-
             var budgetViewModels = new List<BudgetViewModel>();
 
             foreach (var budget in budgets)
             {
                 decimal spent = await GetSpentInCategoryAsync(budget.CategoryId, year, month);
-
-                decimal percent = budget.PlannedAmount > 0
-                    ? (spent / budget.PlannedAmount) * 100
-                    : 0;
-
+                decimal percent = budget.PlannedAmount > 0 ? (spent / budget.PlannedAmount) * 100 : 0;
                 string status = percent > 100 ? "Превышен ❌" :
                                percent > 80 ? "Почти превышен ⚠️" : "В норме ✅";
 
@@ -69,14 +61,10 @@ namespace FinanceApp.Views.Pages
         private async Task<decimal> GetSpentInCategoryAsync(int categoryId, int year, int month)
         {
             if (App.CurrentUser == null) return 0;
-
             var transactions = _transactionService.GetAll(App.CurrentUser.Id);
-
             return transactions
-                .Where(t => t.CategoryId == categoryId &&
-                            t.Type == "Expense" &&
-                            t.Date.Year == year &&
-                            t.Date.Month == month)
+                .Where(t => t.CategoryId == categoryId && t.Type == "Expense" &&
+                            t.Date.Year == year && t.Date.Month == month)
                 .Sum(t => t.Amount);
         }
 
@@ -84,45 +72,41 @@ namespace FinanceApp.Views.Pages
         {
             var window = new AddBudgetWindow();
             if (window.ShowDialog() == true)
-            {
                 LoadBudgetsAsync();
-            }
         }
 
         private void EditBudget_Click(object sender, RoutedEventArgs e)
         {
             if (dgBudgets.SelectedItem is not BudgetViewModel selected)
             {
-                MessageBox.Show("Выберите бюджет для редактирования", "Внимание");
+                ToastNotification.Show("Внимание", "Выберите бюджет для редактирования", ToastType.Warning);
                 return;
             }
-
             var window = new AddBudgetWindow(selected.Budget);
             if (window.ShowDialog() == true)
-            {
                 LoadBudgetsAsync();
-            }
         }
 
-        private async void DeleteBudget_Click(object sender, RoutedEventArgs e)
+        private void DeleteBudget_Click(object sender, RoutedEventArgs e)
         {
             if (dgBudgets.SelectedItem is not BudgetViewModel selected)
             {
-                ToastNotification.Show("Выберите бюджет для удаления", "Внимание");
+                ToastNotification.Show("Внимание", "Выберите бюджет для удаления", ToastType.Warning);
                 return;
             }
 
-            var result = MessageBox.Show(
-                $"Удалить бюджет для категории \"{selected.Budget.Category.Name}\"?",
-                "Подтверждение удаления",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                await _budgetService.DeleteBudgetAsync(selected.Budget.Id);
-                await LoadBudgetsAsync();
-            }
+            ToastNotification.ShowConfirm(
+                "Удалить бюджет?",
+                $"Категория: {selected.Budget.Category.Name} — {selected.Budget.PlannedAmount:N0} ₽",
+                async () =>
+                {
+                    var service = new BudgetService(new FinanceApp.Data.AppDbContext());
+                    await service.DeleteBudgetAsync(selected.Budget.Id);
+                    await LoadBudgetsAsync();
+                    ToastNotification.Show("Удалено", "Бюджет удалён", ToastType.Success);
+                },
+                "Да, удалить"
+            );
         }
     }
 

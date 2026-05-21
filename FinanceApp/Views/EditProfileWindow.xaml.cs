@@ -16,7 +16,6 @@ namespace FinanceApp.Views
         {
             InitializeComponent();
             _currentUser = user;
-
             txtFullName.Text = user.FullName;
             txtEmail.Text = user.Email;
 
@@ -24,7 +23,7 @@ namespace FinanceApp.Views
                 imgAvatar.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(user.AvatarPath));
         }
 
-        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
@@ -36,7 +35,6 @@ namespace FinanceApp.Views
             {
                 Filter = "Изображения (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
             };
-
             if (dialog.ShowDialog() == true)
             {
                 _newAvatarPath = dialog.FileName;
@@ -53,15 +51,13 @@ namespace FinanceApp.Views
                 _currentUser.AvatarPath = _newAvatarPath;
 
             if (!string.IsNullOrEmpty(txtNewPassword.Password))
-            {
                 _currentUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(txtNewPassword.Password);
-            }
 
             using var context = new FinanceApp.Data.AppDbContext();
             context.Users.Update(_currentUser);
             context.SaveChanges();
 
-            MessageBox.Show("Профиль успешно обновлён!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            ToastNotification.Show("Успех", "Профиль обновлён!", ToastType.Success);
             DialogResult = true;
             Close();
         }

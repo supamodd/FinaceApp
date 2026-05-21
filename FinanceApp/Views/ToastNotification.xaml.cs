@@ -18,6 +18,9 @@ namespace FinanceApp.Views
     public partial class ToastNotification : UserControl
     {
         private static StackPanel? _container;
+        private Action? _onConfirm;
+        private Action? _onCancel;
+        private bool _isConfirmMode = false;
 
         public ToastNotification()
         {
@@ -41,7 +44,7 @@ namespace FinanceApp.Views
         }
 
         /// <summary>
-        /// Показать toast-уведомление
+        /// Обычное уведомление (исчезает автоматически)
         /// </summary>
         public static void Show(string title, string message, ToastType type = ToastType.Info, int durationMs = 3500)
         {
@@ -53,6 +56,26 @@ namespace FinanceApp.Views
             toast.AnimateIn(durationMs);
         }
 
+        /// <summary>
+        /// Уведомление с подтверждением (Да/Отмена) — не исчезает автоматически
+        /// </summary>
+        public static void ShowConfirm(string title, string message, Action onConfirm,
+            string confirmText = "Да, удалить", Action? onCancel = null)
+        {
+            if (_container == null) return;
+
+            var toast = new ToastNotification();
+            toast._isConfirmMode = true;
+            toast._onConfirm = onConfirm;
+            toast._onCancel = onCancel;
+            toast.Configure(title, message, ToastType.Warning);
+            toast.ConfirmPanel.Visibility = Visibility.Visible;
+            toast.btnConfirm.Content = confirmText;
+            toast.btnCancel.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#94A3B8"));
+            _container.Children.Add(toast);
+            toast.AnimateIn(-1); // -1 = не исчезает автоматически
+        }
+
         private void Configure(string title, string message, ToastType type)
         {
             txtTitle.Text = title;
@@ -62,7 +85,6 @@ namespace FinanceApp.Views
             {
                 case ToastType.Success:
                     txtIcon.Text = "✅";
-                    ToastBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A2A2650"));
                     ToastBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#34D399"));
                     ToastBorder.Background = CreateGradient("#0D2818", "#0D1A2A");
                     break;
@@ -100,24 +122,24 @@ namespace FinanceApp.Views
         {
             var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
 
-            // Slide in from right + fade in
-            var slideIn = new DoubleAnimation(360, 0, TimeSpan.FromMilliseconds(350)) { EasingFunction = ease };
+            var slideIn = new DoubleAnimation(380, 0, TimeSpan.FromMilliseconds(350)) { EasingFunction = ease };
             var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(350));
 
             SlideTransform.BeginAnimation(TranslateTransform.XProperty, slideIn);
             this.BeginAnimation(OpacityProperty, fadeIn);
 
-            // Wait
-            await Task.Delay(durationMs);
-
-            // Slide out + fade out
-            AnimateOut();
+            // Если -1, не исчезает (ждёт действия пользователя)
+            if (durationMs > 0)
+            {
+                await Task.Delay(durationMs);
+                AnimateOut();
+            }
         }
 
         private void AnimateOut()
         {
             var ease = new CubicEase { EasingMode = EasingMode.EaseIn };
-            var slideOut = new DoubleAnimation(0, 360, TimeSpan.FromMilliseconds(300)) { EasingFunction = ease };
+            var slideOut = new DoubleAnimation(0, 380, TimeSpan.FromMilliseconds(300)) { EasingFunction = ease };
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
 
             fadeOut.Completed += (s, e) =>
@@ -131,6 +153,19 @@ namespace FinanceApp.Views
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
+            if (_isConfirmMode) _onCancel?.Invoke();
+            AnimateOut();
+        }
+
+        private void BtnConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            _onConfirm?.Invoke();
+            AnimateOut();
+        }
+
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            _onCancel?.Invoke();
             AnimateOut();
         }
     }

@@ -15,7 +15,7 @@ namespace FinanceApp.Views
             UpdateColorPreview();
         }
 
-        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
@@ -43,7 +43,7 @@ namespace FinanceApp.Views
         {
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
-                MessageBox.Show("Введите название категории!", "Ошибка");
+                ToastNotification.Show("Ошибка", "Введите название категории!", ToastType.Error);
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace FinanceApp.Views
             var service = new FinanceApp.Services.Categories.CategoryService();
             service.Add(category);
 
-            MessageBox.Show("Категория успешно добавлена!", "Успех");
+            ToastNotification.Show("Успех", $"Категория «{category.Name}» добавлена!", ToastType.Success);
             DialogResult = true;
             Close();
         }

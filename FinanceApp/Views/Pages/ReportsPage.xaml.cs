@@ -15,10 +15,8 @@ namespace FinanceApp.Views.Pages
         public ReportsPage()
         {
             InitializeComponent();
-            // Устанавливаем даты по умолчанию в коде
             dpFrom.SelectedDate = DateTime.Now.AddMonths(-1);
             dpTo.SelectedDate = DateTime.Now;
-
             BtnShowReport_Click(null, null);
         }
 
@@ -31,8 +29,7 @@ namespace FinanceApp.Views.Pages
 
             var transactions = _service.GetAll(App.CurrentUser.Id)
                 .Where(t => t.Date.Date >= from.Date && t.Date.Date <= to.Date)
-                .OrderByDescending(t => t.Date)
-                .ToList();
+                .OrderByDescending(t => t.Date).ToList();
 
             dgReport.ItemsSource = transactions;
 
@@ -48,16 +45,16 @@ namespace FinanceApp.Views.Pages
         {
             if (dgReport.ItemsSource == null)
             {
-                ToastNotification.Show("Сначала сформируйте отчёт", "Предупреждение");
+                ToastNotification.Show("Внимание", "Сначала сформируйте отчёт", ToastType.Warning);
                 return;
             }
 
-            var transactions = ((System.Collections.IEnumerable)dgReport.ItemsSource).Cast<FinancialTransaction>().ToList();
+            var transactions = ((System.Collections.IEnumerable)dgReport.ItemsSource)
+                .Cast<FinancialTransaction>().ToList();
 
             try
             {
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
                 using var package = new ExcelPackage();
                 var worksheet = package.Workbook.Worksheets.Add("Финансовый отчёт");
 
@@ -87,12 +84,12 @@ namespace FinanceApp.Views.Pages
                 if (dialog.ShowDialog() == true)
                 {
                     package.SaveAs(new System.IO.FileInfo(dialog.FileName));
-                    MessageBox.Show("Отчёт успешно сохранён в Excel!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ToastNotification.Show("Успех", "Отчёт сохранён в Excel!", ToastType.Success);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при экспорте:\n{ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ToastNotification.Show("Ошибка", $"Ошибка при экспорте: {ex.Message}", ToastType.Error);
             }
         }
     }

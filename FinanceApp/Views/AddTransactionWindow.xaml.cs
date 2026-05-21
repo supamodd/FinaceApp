@@ -36,11 +36,10 @@ namespace FinanceApp.Views
 
             cmbDayOfMonth.ItemsSource = Enumerable.Range(1, 31);
             cmbDayOfMonth.SelectedIndex = DateTime.Now.Day - 1;
-
             dpStartDate.SelectedDate = DateTime.Now;
         }
 
-        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
@@ -55,7 +54,6 @@ namespace FinanceApp.Views
                 cmbCategory.ItemsSource = allCategories.Where(c => c.Type == "Expense").ToList();
             else
                 cmbCategory.ItemsSource = allCategories;
-
             cmbCategory.DisplayMemberPath = "Name";
         }
 
@@ -71,8 +69,7 @@ namespace FinanceApp.Views
         private void ChkRecurring_Changed(object sender, RoutedEventArgs e)
         {
             RecurringPanel.Visibility = chkRecurring.IsChecked == true
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -81,13 +78,13 @@ namespace FinanceApp.Views
 
             if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount <= 0)
             {
-                MessageBox.Show("Введите корректную сумму!", "Ошибка");
+                ToastNotification.Show("Ошибка", "Введите корректную сумму!", ToastType.Error);
                 return;
             }
 
             if (cmbCategory.SelectedItem is not Category selectedCategory)
             {
-                MessageBox.Show("Выберите категорию!", "Ошибка");
+                ToastNotification.Show("Ошибка", "Выберите категорию!", ToastType.Error);
                 return;
             }
 
@@ -119,11 +116,10 @@ namespace FinanceApp.Views
                     DayOfMonth = cmbDayOfMonth.SelectedIndex + 1,
                     IsActive = true
                 };
-
-                MessageBox.Show("Повторяющаяся транзакция сохранена в базу!",
-                              "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                ToastNotification.Show("Успех", "Повторяющаяся транзакция сохранена!", ToastType.Success);
             }
 
+            ToastNotification.Show("Успех", _transactionToEdit != null ? "Операция обновлена!" : "Операция добавлена!", ToastType.Success);
             DialogResult = true;
             Close();
         }

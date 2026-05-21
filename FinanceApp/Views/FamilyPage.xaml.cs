@@ -20,10 +20,7 @@ namespace FinanceApp.Views
         {
             InitializeComponent();
             _familyService = new FamilyService(_context);
-
-            // Берём ID текущего пользователя
             _currentUserId = App.CurrentUser?.Id ?? 0;
-
             LoadFamilyInfo();
         }
 
@@ -45,7 +42,7 @@ namespace FinanceApp.Views
                     MembersGrid.ItemsSource = members;
 
                     var myRole = members.FirstOrDefault(m => m.UserId == _currentUserId)?.Role;
-                    RoleText.Text = $"Ваша роль: {GetRoleDisplayName(myRole ?? FinanceApp.Data.Models.FamilyRole.Member)}";
+                    RoleText.Text = $"Ваша роль: {GetRoleDisplayName(myRole ?? FamilyRole.Member)}";
                 }
                 else
                 {
@@ -55,10 +52,11 @@ namespace FinanceApp.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки: " + ex.Message);
+                ToastNotification.Show("Ошибка", "Ошибка загрузки: " + ex.Message, ToastType.Error);
             }
         }
-        private string GetRoleDisplayName(FinanceApp.Data.Models.FamilyRole role)
+
+        private string GetRoleDisplayName(FamilyRole role)
         {
             var field = role.GetType().GetField(role.ToString());
             if (field != null)
@@ -76,21 +74,20 @@ namespace FinanceApp.Views
             {
                 if (string.IsNullOrWhiteSpace(FamilyNameBox.Text))
                 {
-                    MessageBox.Show("Введите название семьи");
+                    ToastNotification.Show("Внимание", "Введите название семьи", ToastType.Warning);
                     return;
                 }
 
                 await _familyService.CreateFamilyAsync(_currentUserId, FamilyNameBox.Text);
-                MessageBox.Show("Семья успешно создана!");
+                ToastNotification.Show("Успех", "Семья успешно создана!", ToastType.Success);
                 LoadFamilyInfo();
             }
             catch (Exception ex)
             {
                 string error = ex.Message;
                 if (ex.InnerException != null)
-                    error += "\n\nInner: " + ex.InnerException.Message;
-
-                MessageBox.Show(error, "Ошибка создания семьи");
+                    error += "\n" + ex.InnerException.Message;
+                ToastNotification.Show("Ошибка", error, ToastType.Error);
             }
         }
 
@@ -101,12 +98,15 @@ namespace FinanceApp.Views
                 if (string.IsNullOrWhiteSpace(InviteCodeBox.Text)) return;
 
                 bool success = await _familyService.JoinByInvitationCodeAsync(_currentUserId, InviteCodeBox.Text);
-                MessageBox.Show(success ? "Вы присоединились к семье!" : "Неверный код");
+                if (success)
+                    ToastNotification.Show("Успех", "Вы присоединились к семье!", ToastType.Success);
+                else
+                    ToastNotification.Show("Ошибка", "Неверный код приглашения", ToastType.Error);
                 LoadFamilyInfo();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message);
+                ToastNotification.Show("Ошибка", ex.Message, ToastType.Error);
             }
         }
 
@@ -118,41 +118,41 @@ namespace FinanceApp.Views
                 if (!families.Any()) return;
 
                 var code = await _familyService.GenerateInvitationCodeAsync(families.First().Id, _currentUserId);
-
-                // Копируем в буфер обмена
                 Clipboard.SetText(code);
 
-                MessageBox.Show($"Код приглашения скопирован в буфер обмена!\n\n{code}\n\nДействителен 7 дней",
-                                "Приглашение", MessageBoxButton.OK, MessageBoxImage.Information);
+                ToastNotification.Show("Код скопирован!", $"{code}\nДействителен 7 дней", ToastType.Info);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message);
+                ToastNotification.Show("Ошибка", ex.Message, ToastType.Error);
             }
         }
 
-        // Покинуть семью
         private async void LeaveFamily_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Вы уверены, что хотите покинуть семью?", "Подтверждение",
-                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                await _familyService.LeaveFamilyAsync(_currentUserId, _currentUserId); // упрощённо
-                MessageBox.Show("Вы покинули семью");
-                LoadFamilyInfo();
-            }
+            ToastNotification.ShowConfirm(
+                "Покинуть семью?",
+                "Вы уверены, что хотите покинуть семью?",
+                async () =>
+                {
+                    await _familyService.LeaveFamilyAsync(_currentUserId, _currentUserId);
+                    ToastNotification.Show("Готово", "Вы покинули семью", ToastType.Info);
+                    LoadFamilyInfo();
+                },
+                "Да, покинуть"
+            );
         }
+
         private void MembersGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             _selectedMember = MembersGrid.SelectedItem as FamilyMember;
         }
-        // Сменить роль
+
         private async void ChangeRole_Click(object sender, RoutedEventArgs e)
         {
             var selected = MembersGrid.SelectedItem as FamilyMember;
             if (selected == null) return;
 
-            // Создаём окно выбора роли
             var roleWindow = new Window
             {
                 Title = "Выберите роль",
@@ -189,11 +189,12 @@ namespace FinanceApp.Views
                 if (success)
                 {
                     roleWindow.Close();
+                    ToastNotification.Show("Успех", "Роль изменена", ToastType.Success);
                     LoadFamilyInfo();
                 }
                 else
                 {
-                    MessageBox.Show("Нет прав на изменение роли");
+                    ToastNotification.Show("Ошибка", "Нет прав на изменение роли", ToastType.Error);
                 }
             };
 
@@ -204,24 +205,34 @@ namespace FinanceApp.Views
             roleWindow.ShowDialog();
         }
 
-        // Исключить участника
         private async void RemoveMember_Click(object sender, RoutedEventArgs e)
         {
             var selected = MembersGrid.SelectedItem as FamilyMember;
             if (selected == null) return;
 
-            if (MessageBox.Show($"Исключить {selected.User?.FullName ?? selected.User?.Login}?",
-                "Подтверждение", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                return;
+            string memberName = selected.User?.FullName ?? selected.User?.Login ?? "участника";
 
-            bool success = await _familyService.RemoveMemberAsync(
-                (await _familyService.GetUserFamiliesAsync(_currentUserId)).First().Id,
-                selected.UserId, _currentUserId);
+            ToastNotification.ShowConfirm(
+                "Исключить участника?",
+                $"Исключить {memberName} из семьи?",
+                async () =>
+                {
+                    bool success = await _familyService.RemoveMemberAsync(
+                        (await _familyService.GetUserFamiliesAsync(_currentUserId)).First().Id,
+                        selected.UserId, _currentUserId);
 
-            if (success)
-                LoadFamilyInfo();
-            else
-                MessageBox.Show("Нет прав или нельзя исключить владельца");
+                    if (success)
+                    {
+                        ToastNotification.Show("Готово", $"{memberName} исключён из семьи", ToastType.Success);
+                        LoadFamilyInfo();
+                    }
+                    else
+                    {
+                        ToastNotification.Show("Ошибка", "Нет прав или нельзя исключить владельца", ToastType.Error);
+                    }
+                },
+                "Да, исключить"
+            );
         }
     }
 }

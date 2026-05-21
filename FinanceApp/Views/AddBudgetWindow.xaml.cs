@@ -15,10 +15,8 @@ namespace FinanceApp.Views
         private readonly CategoryService _categoryService = new CategoryService();
         private Budget? _editingBudget;
 
-        // Конструктор для ДОБАВЛЕНИЯ
         public AddBudgetWindow() : this(null) { }
 
-        // Конструктор для РЕДАКТИРОВАНИЯ
         public AddBudgetWindow(Budget? budgetToEdit)
         {
             InitializeComponent();
@@ -40,26 +38,20 @@ namespace FinanceApp.Views
             cmbCategory.ItemsSource = expenseCategories;
             cmbCategory.DisplayMemberPath = "Name";
 
-            // Месяцы
             var months = new List<string>();
             for (int m = 1; m <= 12; m++)
                 months.Add(new DateTime(2025, m, 1).ToString("MMMM"));
             cmbMonth.ItemsSource = months;
             cmbMonth.SelectedIndex = DateTime.Now.Month - 1;
 
-            // Год
             var years = Enumerable.Range(DateTime.Now.Year - 1, 3).ToList();
             cmbYear.ItemsSource = years;
             cmbYear.SelectedItem = DateTime.Now.Year;
 
-            // Если редактирование — заполняем поля
             if (_editingBudget != null)
             {
-                // Находим категорию в списке
                 var category = expenseCategories.FirstOrDefault(c => c.Id == _editingBudget.CategoryId);
-                if (category != null)
-                    cmbCategory.SelectedItem = category;
-
+                if (category != null) cmbCategory.SelectedItem = category;
                 txtLimit.Text = _editingBudget.PlannedAmount.ToString();
                 cmbMonth.SelectedIndex = _editingBudget.Month - 1;
                 cmbYear.SelectedItem = _editingBudget.Year;
@@ -70,30 +62,27 @@ namespace FinanceApp.Views
         {
             if (cmbCategory.SelectedItem is not Category selectedCategory)
             {
-                MessageBox.Show("Выберите категорию", "Ошибка");
+                ToastNotification.Show("Ошибка", "Выберите категорию", ToastType.Error);
                 return;
             }
 
             if (!decimal.TryParse(txtLimit.Text, out decimal limit) || limit <= 0)
             {
-                MessageBox.Show("Введите корректный лимит", "Ошибка");
+                ToastNotification.Show("Ошибка", "Введите корректный лимит", ToastType.Error);
                 return;
             }
 
             if (_editingBudget != null)
             {
-                // Редактирование существующего
                 _editingBudget.CategoryId = selectedCategory.Id;
                 _editingBudget.PlannedAmount = limit;
                 _editingBudget.Year = (int)cmbYear.SelectedItem;
                 _editingBudget.Month = cmbMonth.SelectedIndex + 1;
-
                 await _budgetService.SaveBudgetAsync(_editingBudget);
-                MessageBox.Show("Бюджет обновлён!", "Готово");
+                ToastNotification.Show("Успех", "Бюджет обновлён!", ToastType.Success);
             }
             else
             {
-                // Создание нового
                 var budget = new Budget
                 {
                     UserId = App.CurrentUser?.Id ?? 0,
@@ -102,9 +91,8 @@ namespace FinanceApp.Views
                     Year = (int)cmbYear.SelectedItem,
                     Month = cmbMonth.SelectedIndex + 1
                 };
-
                 await _budgetService.SaveBudgetAsync(budget);
-                ToastNotification.Show("Готово", "Бюджет успешно сохранён!", ToastType.Success);
+                ToastNotification.Show("Успех", $"Бюджет на {limit:N0} ₽ сохранён!", ToastType.Success);
             }
 
             DialogResult = true;

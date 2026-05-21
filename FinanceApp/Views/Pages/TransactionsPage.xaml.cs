@@ -41,8 +41,7 @@ namespace FinanceApp.Views.Pages
         {
             if (App.CurrentUser == null) return;
             _allTransactions = _service.GetAll(App.CurrentUser.Id)
-                .OrderByDescending(t => t.Date)
-                .ToList();
+                .OrderByDescending(t => t.Date).ToList();
             ApplyFilters();
         }
 
@@ -50,25 +49,20 @@ namespace FinanceApp.Views.Pages
         {
             var filtered = _allTransactions.AsEnumerable();
 
-            // Фильтр по типу
-            if (cmbTypeFilter.SelectedIndex == 1) // Доход
+            if (cmbTypeFilter.SelectedIndex == 1)
                 filtered = filtered.Where(t => t.Type == "Income");
-            else if (cmbTypeFilter.SelectedIndex == 2) // Расход
+            else if (cmbTypeFilter.SelectedIndex == 2)
                 filtered = filtered.Where(t => t.Type == "Expense");
 
-            // Фильтр по категории
             if (cmbCategoryFilter.SelectedItem is Category cat && cat.Id != 0)
                 filtered = filtered.Where(t => t.CategoryId == cat.Id);
 
-            // Фильтр по дате "от"
             if (dpFilterFrom.SelectedDate is DateTime fromDate)
                 filtered = filtered.Where(t => t.Date >= fromDate);
 
-            // Фильтр по дате "до"
             if (dpFilterTo.SelectedDate is DateTime toDate)
                 filtered = filtered.Where(t => t.Date <= toDate);
 
-            // Поиск по описанию
             string search = txtSearch.Text?.Trim() ?? "";
             if (!string.IsNullOrEmpty(search))
             {
@@ -79,16 +73,10 @@ namespace FinanceApp.Views.Pages
 
             var result = filtered.ToList();
             dgTransactions.ItemsSource = result;
-
-            // Счётчик
             txtCount.Text = $"Найдено: {result.Count} из {_allTransactions.Count}";
         }
 
-        // ── Обработчики фильтров ──
-        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ApplyFilters();
-        }
+        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e) => ApplyFilters();
 
         private void Filter_Changed(object sender, object e)
         {
@@ -103,7 +91,6 @@ namespace FinanceApp.Views.Pages
             ApplyFilters();
         }
 
-        // ── Действия ──
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddTransactionWindow();
@@ -121,7 +108,7 @@ namespace FinanceApp.Views.Pages
             }
             else
             {
-                ToastNotification.Show("Выберите операцию для редактирования", "Внимание");
+                ToastNotification.Show("Внимание", "Выберите операцию для редактирования", ToastType.Warning);
             }
         }
 
@@ -129,22 +116,26 @@ namespace FinanceApp.Views.Pages
         {
             if (dgTransactions.SelectedItem is FinancialTransaction selected)
             {
-                if (MessageBox.Show("Удалить эту операцию?", "Подтверждение",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    _service.Delete(selected.Id);
-                    LoadTransactions();
-                }
+                ToastNotification.ShowConfirm(
+                    "Удалить операцию?",
+                    $"{selected.Amount:N0} ₽ — {selected.Description ?? "без описания"}",
+                    () =>
+                    {
+                        _service.Delete(selected.Id);
+                        LoadTransactions();
+                        ToastNotification.Show("Удалено", "Операция удалена", ToastType.Success);
+                    },
+                    "Да, удалить"
+                );
             }
             else
             {
-                ToastNotification.Show("Выберите операцию для удаления", "Внимание");
+                ToastNotification.Show("Внимание", "Выберите операцию для удаления", ToastType.Warning);
             }
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            // Сброс всех фильтров
             txtSearch.Text = "";
             cmbTypeFilter.SelectedIndex = 0;
             cmbCategoryFilter.SelectedIndex = 0;

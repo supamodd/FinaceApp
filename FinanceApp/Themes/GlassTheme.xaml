@@ -99,7 +99,6 @@
     <!--  BUTTON STYLES                                             -->
     <!-- ═══════════════════════════════════════════════════════════ -->
 
-    <!-- Primary Button (Purple Gradient) -->
     <Style x:Key="PrimaryButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -132,7 +131,6 @@
         </Setter>
     </Style>
 
-    <!-- Success Button (Green) -->
     <Style x:Key="SuccessButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -162,7 +160,6 @@
         </Setter>
     </Style>
 
-    <!-- Danger Button (Red) -->
     <Style x:Key="DangerButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -192,7 +189,6 @@
         </Setter>
     </Style>
 
-    <!-- Ghost Button (transparent with border) -->
     <Style x:Key="GhostButton" TargetType="Button">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
@@ -225,7 +221,6 @@
         </Setter>
     </Style>
 
-    <!-- Sidebar Menu Button -->
     <Style x:Key="MenuButton" TargetType="Button">
         <Setter Property="Height" Value="52"/>
         <Setter Property="Margin" Value="12 3"/>
@@ -253,12 +248,13 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!--  TEXTBOX STYLE  (FIX: solid dark background for visibility) -->
+    <!--  TEXTBOX — FIX: Foreground передаётся в ScrollViewer       -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <Style x:Key="ModernTextBox" TargetType="TextBox">
         <Setter Property="Height" Value="48"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Foreground" Value="#F1F5F9"/>
+        <Setter Property="Background" Value="{StaticResource InputBgBrush}"/>
         <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}"/>
         <Setter Property="Padding" Value="16 12"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -266,44 +262,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Border x:Name="border" CornerRadius="12"
-                            Background="{StaticResource InputBgBrush}"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{StaticResource GlassBorderBrush}"
                             BorderThickness="1"
                             Padding="{TemplateBinding Padding}">
-                        <ScrollViewer x:Name="PART_ContentHost"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-                            <Setter TargetName="border" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Opacity="0.3" Color="#8B5CF6"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- PasswordBox Style (FIX: solid dark background for visibility) -->
-    <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
-        <Setter Property="Height" Value="48"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-        <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}"/>
-        <Setter Property="Padding" Value="16 12"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="PasswordBox">
-                    <Border x:Name="border" CornerRadius="12"
-                            Background="{StaticResource InputBgBrush}"
-                            BorderBrush="{StaticResource GlassBorderBrush}"
-                            BorderThickness="1"
-                            Padding="{TemplateBinding Padding}">
-                        <ScrollViewer x:Name="PART_ContentHost"/>
+                        <ScrollViewer x:Name="PART_ContentHost" Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
@@ -321,7 +284,43 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!--  COMBOBOX STYLE                                            -->
+    <!--  PASSWORDBOX — FIX: Foreground передаётся в ScrollViewer   -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="#F1F5F9"/>
+        <Setter Property="Background" Value="{StaticResource InputBgBrush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Padding" Value="16 12"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="border" CornerRadius="12"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource GlassBorderBrush}"
+                            BorderThickness="1"
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost" Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Opacity="0.3" Color="#8B5CF6"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  COMBOBOX                                                  -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <Style x:Key="ModernComboBox" TargetType="ComboBox">
         <Setter Property="Height" Value="48"/>
@@ -334,7 +333,7 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!--  DATAGRID STYLE                                            -->
+    <!--  DATAGRID                                                  -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <Style x:Key="ModernDataGrid" TargetType="DataGrid">
         <Setter Property="Background" Value="Transparent"/>

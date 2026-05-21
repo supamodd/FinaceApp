@@ -9,12 +9,10 @@
                 <ResourceDictionary Source="Themes/GlassTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Global font -->
             <Style TargetType="Window">
                 <Setter Property="FontFamily" Value="Segoe UI, Arial"/>
             </Style>
 
-            <!-- Default Button override -->
             <Style TargetType="Button">
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="Padding" Value="16 10"/>
@@ -22,7 +20,129 @@
                 <Setter Property="FontFamily" Value="Segoe UI"/>
             </Style>
 
-            <!-- Thin scrollbar -->
+            <!-- ═══ TextBox ═══ -->
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="#2A2650"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="CaretBrush" Value="#8B5CF6"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8 6"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="SelectionBrush" Value="#8B5CF6"/>
+            </Style>
+
+            <!-- ═══ PasswordBox ═══ -->
+            <Style TargetType="PasswordBox">
+                <Setter Property="Background" Value="#2A2650"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="CaretBrush" Value="#8B5CF6"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8 6"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="SelectionBrush" Value="#8B5CF6"/>
+            </Style>
+
+            <!-- ═══ ComboBox — полный тёмный шаблон ═══ -->
+            <Style TargetType="ComboBox">
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="28"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="4"
+                                        Background="#2A2650" BorderBrush="#30FFFFFF" BorderThickness="1"/>
+                                <ContentPresenter x:Name="ContentSite"
+                                                  Grid.Column="0"
+                                                  IsHitTestVisible="False"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  Margin="10,0,0,0"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"/>
+                                <ToggleButton Grid.ColumnSpan="2" Background="Transparent" BorderThickness="0"
+                                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Focusable="False" ClickMode="Press">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Background="Transparent"/>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <Path Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Data="M0,0 L4,4 8,0" Stroke="#94A3B8" StrokeThickness="1.5"
+                                      IsHitTestVisible="False"/>
+                                <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       Placement="Bottom" Focusable="False" AllowsTransparency="True"
+                                       PopupAnimation="Slide">
+                                    <Border CornerRadius="4" Margin="0 2 0 0"
+                                            Background="#1E1A3A" BorderBrush="#30FFFFFF" BorderThickness="1"
+                                            MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                            MaxHeight="300">
+                                        <ScrollViewer Margin="2">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#8B5CF6"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- ═══ ComboBoxItem ═══ -->
+            <Style TargetType="ComboBoxItem">
+                <Setter Property="Background" Value="#1E1A3A"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="Padding" Value="10 8"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Style.Triggers>
+                    <Trigger Property="IsHighlighted" Value="True">
+                        <Setter Property="Background" Value="#8B5CF6"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#3D3670"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- ═══ DatePicker ═══ -->
+            <Style TargetType="DatePicker">
+                <Setter Property="Background" Value="#2A2650"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8 6"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style TargetType="DatePickerTextBox">
+                <Setter Property="Background" Value="#2A2650"/>
+                <Setter Property="Foreground" Value="#F1F5F9"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="4 2"/>
+            </Style>
+
+            <!-- ═══ CheckBox ═══ -->
+            <Style TargetType="CheckBox">
+                <Setter Property="Foreground" Value="#94A3B8"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
             <Style TargetType="ScrollBar">
                 <Setter Property="Width" Value="8"/>
                 <Setter Property="Background" Value="Transparent"/>

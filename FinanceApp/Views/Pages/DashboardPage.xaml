@@ -7,17 +7,11 @@
         <Grid Margin="32 28">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- Balance cards -->
                 <RowDefinition Height="Auto"/>
-                <!-- Filters -->
                 <RowDefinition Height="Auto"/>
-                <!-- Custom period -->
                 <RowDefinition Height="Auto"/>
-                <!-- PieChart -->
                 <RowDefinition Height="Auto"/>
-                <!-- Monthly chart -->
                 <RowDefinition Height="Auto"/>
-                <!-- Recent transactions -->
             </Grid.RowDefinitions>
 
             <!-- ═══ Balance Cards ═══ -->
@@ -28,7 +22,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Total Balance -->
                 <Border Grid.Column="0" CornerRadius="18" Margin="0 0 10 0" Padding="28">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -45,7 +38,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Income -->
                 <Border Grid.Column="1" CornerRadius="18" Margin="6 0" Padding="24"
                         Style="{StaticResource GlassCard}">
                     <StackPanel>
@@ -60,7 +52,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Expenses -->
                 <Border Grid.Column="2" CornerRadius="18" Margin="6 0 0 0" Padding="24"
                         Style="{StaticResource GlassCard}">
                     <StackPanel>
@@ -107,16 +98,18 @@
                 <DatePicker x:Name="dpTo" Width="170" SelectedDateChanged="DpTo_SelectedDateChanged"/>
             </StackPanel>
 
-            <!-- ═══ Pie Chart ═══ -->
+            <!-- ═══ Pie Chart — тёмный фон ═══ -->
             <Border Grid.Row="3" Style="{StaticResource GlassCard}" Margin="0 0 0 20">
-                <lc:PieChart x:Name="pieChart" Height="340" LegendPosition="Right"/>
+                <lc:PieChart x:Name="pieChart" Height="340" LegendPosition="Right"
+                             Background="Transparent"/>
             </Border>
 
-            <!-- ═══ Monthly Chart ═══ -->
+            <!-- ═══ Monthly Chart — тёмный фон ═══ -->
             <Border Grid.Row="4" Style="{StaticResource GlassCard}" Margin="0 0 0 20">
                 <StackPanel>
                     <TextBlock Text="Динамика по месяцам" Style="{StaticResource SectionTitle}" Margin="0 0 0 14"/>
-                    <lc:CartesianChart x:Name="monthlyChart" Height="320"/>
+                    <lc:CartesianChart x:Name="monthlyChart" Height="320"
+                                       Background="Transparent"/>
                 </StackPanel>
             </Border>
 

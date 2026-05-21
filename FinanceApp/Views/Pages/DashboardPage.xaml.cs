@@ -19,6 +19,13 @@ namespace FinanceApp.Views.Pages
         private DateTime? _customFrom;
         private DateTime? _customTo;
 
+        // Цвета для тёмной темы
+        private static readonly SKColor DarkBg = SKColor.Parse("#00000000"); // прозрачный
+        private static readonly SKColor TextColor = SKColor.Parse("#94A3B8");
+        private static readonly SKColor GridLineColor = SKColor.Parse("#2A2650");
+        private static readonly SKColor IncomeColor = SKColor.Parse("#34D399");
+        private static readonly SKColor ExpenseColor = SKColor.Parse("#F87171");
+
         public DashboardPage()
         {
             InitializeComponent();
@@ -83,15 +90,18 @@ namespace FinanceApp.Views.Pages
             var transactions = GetFilteredTransactions();
             int mode = cmbChartMode?.SelectedIndex ?? 0;
 
-            if (mode == 0)                                                                                              // Доходы vs Расходы
+            // Тёмная тема для легенды
+            pieChart.LegendTextPaint = new SolidColorPaint(TextColor);
+
+            if (mode == 0)
             {
                 decimal income = transactions.Where(t => t.Type == "Income").Sum(t => t.Amount);
                 decimal expense = transactions.Where(t => t.Type == "Expense").Sum(t => t.Amount);
 
                 var series = new ISeries[]
                 {
-                    new PieSeries<double> { Name = "Доходы", Values = new[] { (double)income }, Fill = new SolidColorPaint(SKColors.LimeGreen) },
-                    new PieSeries<double> { Name = "Расходы", Values = new[] { (double)expense }, Fill = new SolidColorPaint(SKColors.Red) }
+                    new PieSeries<double> { Name = "Доходы", Values = new[] { (double)income }, Fill = new SolidColorPaint(IncomeColor) },
+                    new PieSeries<double> { Name = "Расходы", Values = new[] { (double)expense }, Fill = new SolidColorPaint(ExpenseColor) }
                 };
 
                 if (_showPercent && (income + expense) > 0)
@@ -103,7 +113,7 @@ namespace FinanceApp.Views.Pages
 
                 pieChart.Series = series;
             }
-            else                                                            // По категориям
+            else
             {
                 var grouped = transactions
                     .Where(t => t.Category != null)
@@ -141,20 +151,41 @@ namespace FinanceApp.Views.Pages
 
             var labels = monthlyData.Select(x => x.Month.ToString("MMM yy")).ToArray();
 
-            monthlyChart.XAxes = new[] { new Axis { Labels = labels } };
+            // Тёмная тема для осей
+            monthlyChart.XAxes = new[]
+            {
+                new Axis
+                {
+                    Labels = labels,
+                    LabelsPaint = new SolidColorPaint(TextColor),
+                    SeparatorsPaint = new SolidColorPaint(GridLineColor)
+                }
+            };
+
+            monthlyChart.YAxes = new[]
+            {
+                new Axis
+                {
+                    LabelsPaint = new SolidColorPaint(TextColor),
+                    SeparatorsPaint = new SolidColorPaint(GridLineColor)
+                }
+            };
+
+            monthlyChart.LegendTextPaint = new SolidColorPaint(TextColor);
+
             monthlyChart.Series = new ISeries[]
             {
                 new ColumnSeries<decimal>
                 {
                     Name = "Доходы",
                     Values = monthlyData.Select(x => x.Income).ToArray(),
-                    Fill = new SolidColorPaint(SKColors.LimeGreen)
+                    Fill = new SolidColorPaint(IncomeColor)
                 },
                 new ColumnSeries<decimal>
                 {
                     Name = "Расходы",
                     Values = monthlyData.Select(x => x.Expense).ToArray(),
-                    Fill = new SolidColorPaint(SKColors.Red)
+                    Fill = new SolidColorPaint(ExpenseColor)
                 }
             };
         }

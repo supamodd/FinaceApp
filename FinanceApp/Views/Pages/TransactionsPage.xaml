@@ -29,19 +29,64 @@
                     Click="BtnDelete_Click"/>
         </StackPanel>
 
-        <!-- Filters -->
-        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="16" Margin="0 0 0 16">
-            <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="cmbTypeFilter" Width="170" Height="42" Margin="0 0 12 0" SelectedIndex="0"
-                          FontSize="14">
-                    <ComboBoxItem Content="Все типы"/>
-                    <ComboBoxItem Content="Доход"/>
-                    <ComboBoxItem Content="Расход"/>
-                </ComboBox>
-                <Button Content="🔄 Обновить" Style="{StaticResource GhostButton}" 
-                        Height="42" Padding="20 0"
-                        Click="BtnRefresh_Click"/>
-            </StackPanel>
+        <!-- ═══ Фильтры и поиск ═══ -->
+        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="18" Margin="0 0 0 16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Строка 1: Поиск + Тип + Категория -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <!-- Поиск -->
+                    <Grid Margin="0 0 12 0">
+                        <TextBox x:Name="txtSearch" Width="250" Height="42"
+                                 Style="{StaticResource ModernTextBox}"
+                                 TextChanged="TxtSearch_TextChanged"/>
+                        <TextBlock Text="🔍 Поиск по описанию..." 
+                                   IsHitTestVisible="False"
+                                   VerticalAlignment="Center" Margin="16 0 0 0"
+                                   Foreground="#64748B" FontSize="13"
+                                   Visibility="{Binding Text.IsEmpty, ElementName=txtSearch, Converter={StaticResource BoolToVisibility}}"/>
+                    </Grid>
+
+                    <!-- Тип -->
+                    <ComboBox x:Name="cmbTypeFilter" Width="150" Height="42" Margin="0 0 12 0" 
+                              SelectedIndex="0" SelectionChanged="Filter_Changed">
+                        <ComboBoxItem Content="Все типы"/>
+                        <ComboBoxItem Content="Доход"/>
+                        <ComboBoxItem Content="Расход"/>
+                    </ComboBox>
+
+                    <!-- Категория -->
+                    <ComboBox x:Name="cmbCategoryFilter" Width="180" Height="42" Margin="0 0 12 0"
+                              DisplayMemberPath="Name" SelectionChanged="Filter_Changed"/>
+
+                    <!-- Обновить -->
+                    <Button Content="🔄" Style="{StaticResource GhostButton}" 
+                            Width="42" Height="42" Padding="0"
+                            Click="BtnRefresh_Click" ToolTip="Сбросить фильтры"/>
+                </StackPanel>
+
+                <!-- Строка 2: Период -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 12 0 0">
+                    <TextBlock Text="Период:" Foreground="#94A3B8" FontSize="13" 
+                               VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    <DatePicker x:Name="dpFilterFrom" Width="150" Height="38" Margin="0 0 8 0"
+                                SelectedDateChanged="Filter_Changed"/>
+                    <TextBlock Text="—" Foreground="#64748B" VerticalAlignment="Center" Margin="0 0 8 0"/>
+                    <DatePicker x:Name="dpFilterTo" Width="150" Height="38" Margin="0 0 12 0"
+                                SelectedDateChanged="Filter_Changed"/>
+                    <Button Content="Очистить даты" Style="{StaticResource GhostButton}" 
+                            Height="38" Padding="16 0" FontSize="12"
+                            Click="BtnClearDates_Click"/>
+
+                    <!-- Счётчик результатов -->
+                    <TextBlock x:Name="txtCount" Foreground="#64748B" FontSize="13" 
+                               VerticalAlignment="Center" Margin="20 0 0 0"/>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Transactions Table -->
@@ -55,7 +100,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="110"/>
                     <DataGridTextColumn Header="Тип" Binding="{Binding TypeDisplay}" Width="100"/>
-                    <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="120"/>
+                    <DataGridTextColumn Header="Сумма" Binding="{Binding Amount, StringFormat={}{0:N0} ₽}" Width="120"/>
                     <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="170"/>
                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
                 </DataGrid.Columns>

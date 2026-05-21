@@ -17,8 +17,16 @@
                 <TextBlock Text="💰 Бюджеты по категориям" Style="{StaticResource PageTitle}" VerticalAlignment="Center"/>
                 <Button Content="+ Добавить бюджет" 
                         Style="{StaticResource SuccessButton}"
-                        Margin="30 0 0 0" Padding="24 0"
+                        Margin="30 0 10 0" Padding="24 0"
                         Click="AddBudget_Click"/>
+                <Button Content="✏️ Редактировать" 
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="0 0 10 0" Padding="20 0"
+                        Click="EditBudget_Click"/>
+                <Button Content="🗑 Удалить" 
+                        Style="{StaticResource DangerButton}"
+                        Padding="20 0"
+                        Click="DeleteBudget_Click"/>
             </StackPanel>
 
             <!-- Budgets Table -->
@@ -29,7 +37,8 @@
                           CellStyle="{StaticResource ModernDataGridCell}"
                           RowStyle="{StaticResource ModernDataGridRow}"
                           CanUserSortColumns="True"
-                          RowHeight="56">
+                          RowHeight="56"
+                          SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Категория" Binding="{Binding Budget.Category.Name}" Width="220"/>
                         <DataGridTextColumn Header="Лимит" 

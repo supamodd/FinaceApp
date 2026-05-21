@@ -82,7 +82,43 @@ namespace FinanceApp.Views.Pages
             var window = new AddBudgetWindow();
             if (window.ShowDialog() == true)
             {
-                LoadBudgetsAsync();         // обновляем список
+                LoadBudgetsAsync();
+            }
+        }
+
+        private void EditBudget_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgBudgets.SelectedItem is not BudgetViewModel selected)
+            {
+                MessageBox.Show("Выберите бюджет для редактирования", "Внимание");
+                return;
+            }
+
+            var window = new AddBudgetWindow(selected.Budget);
+            if (window.ShowDialog() == true)
+            {
+                LoadBudgetsAsync();
+            }
+        }
+
+        private async void DeleteBudget_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgBudgets.SelectedItem is not BudgetViewModel selected)
+            {
+                MessageBox.Show("Выберите бюджет для удаления", "Внимание");
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Удалить бюджет для категории \"{selected.Budget.Category.Name}\"?",
+                "Подтверждение удаления",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                await _budgetService.DeleteBudgetAsync(selected.Budget.Id);
+                await LoadBudgetsAsync();
             }
         }
     }

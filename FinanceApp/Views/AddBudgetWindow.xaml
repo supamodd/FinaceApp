@@ -71,7 +71,7 @@
                 <Button Content="Отмена" Style="{StaticResource GhostButton}" 
                         Width="120" Margin="0 0 12 0" Click="Cancel_Click"/>
                 <Button Content="Сохранить бюджет" Style="{StaticResource SuccessButton}" 
-                        Width="180" Click="Save_Click"/>
+                        Width="184" Click="Save_Click"/>
             </StackPanel>
         </Grid>
     </Border>

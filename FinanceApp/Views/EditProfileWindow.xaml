@@ -34,9 +34,11 @@
                 <Border Width="100" Height="100" CornerRadius="50" 
                         BorderBrush="{StaticResource AccentBrush}" BorderThickness="3" 
                         HorizontalAlignment="Center" Margin="0 0 0 6">
-                    <Border CornerRadius="47" ClipToBounds="True">
-                        <Image x:Name="imgAvatar" Stretch="UniformToFill"/>
-                    </Border>
+                    <Image x:Name="imgAvatar" Stretch="UniformToFill" Width="94" Height="94">
+                        <Image.Clip>
+                            <EllipseGeometry Center="47,47" RadiusX="47" RadiusY="47"/>
+                        </Image.Clip>
+                    </Image>
                 </Border>
                 <Button Content="📸 Изменить фото" Style="{StaticResource GhostButton}" 
                         Width="169" Height="36" FontSize="13" Margin="0 6 0 20"

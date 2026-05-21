@@ -33,12 +33,16 @@ namespace FinanceApp.Views
             cmbCategory.ItemsSource = expenseCategories;
             cmbCategory.DisplayMemberPath = "Name";
 
-            cmbMonth.ItemsSource = Enumerable.Range(1, 12)
-                .Select(m => new { Value = m, Name = new DateTime(2025, m, 1).ToString("MMMM") });
-            cmbMonth.DisplayMemberPath = "Name";
+            // Месяцы — простой список строк
+            var months = new List<string>();
+            for (int m = 1; m <= 12; m++)
+                months.Add(new DateTime(2025, m, 1).ToString("MMMM"));
+            cmbMonth.ItemsSource = months;
             cmbMonth.SelectedIndex = DateTime.Now.Month - 1;
 
-            cmbYear.ItemsSource = Enumerable.Range(DateTime.Now.Year - 1, 3);
+            // Год
+            var years = Enumerable.Range(DateTime.Now.Year - 1, 3).ToList();
+            cmbYear.ItemsSource = years;
             cmbYear.SelectedItem = DateTime.Now.Year;
         }
 
@@ -62,7 +66,7 @@ namespace FinanceApp.Views
                 CategoryId = selectedCategory.Id,
                 PlannedAmount = limit,
                 Year = (int)cmbYear.SelectedItem,
-                Month = ((dynamic)cmbMonth.SelectedItem).Value
+                Month = cmbMonth.SelectedIndex + 1
             };
 
             await _budgetService.SaveBudgetAsync(budget);

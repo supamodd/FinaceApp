@@ -12,9 +12,11 @@
             <Border Width="40" Height="40" CornerRadius="20" 
                     BorderBrush="{StaticResource AccentBrush}" BorderThickness="2"
                     Background="{StaticResource GlassWhiteBrush}">
-                <Border CornerRadius="18" ClipToBounds="True">
-                    <Image x:Name="imgAvatar" Stretch="UniformToFill"/>
-                </Border>
+                <Image x:Name="imgAvatar" Stretch="UniformToFill" Width="36" Height="36">
+                    <Image.Clip>
+                        <EllipseGeometry Center="18,18" RadiusX="18" RadiusY="18"/>
+                    </Image.Clip>
+                </Image>
             </Border>
 
             <!-- Name & login -->

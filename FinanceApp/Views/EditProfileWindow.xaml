@@ -40,7 +40,7 @@
                     </Border>
                 </Border>
                 <Button Content="📸 Изменить фото" Style="{StaticResource GhostButton}" 
-                        Width="160" Height="36" FontSize="13" Margin="0 6 0 20"
+                        Width="169" Height="36" FontSize="13" Margin="0 6 0 20"
                         Click="BtnChangePhoto_Click"/>
 
                 <TextBlock Text="ФИО" Style="{StaticResource Label}"/>

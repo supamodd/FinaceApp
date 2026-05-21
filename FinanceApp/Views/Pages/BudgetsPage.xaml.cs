@@ -105,7 +105,7 @@ namespace FinanceApp.Views.Pages
         {
             if (dgBudgets.SelectedItem is not BudgetViewModel selected)
             {
-                MessageBox.Show("Выберите бюджет для удаления", "Внимание");
+                ToastNotification.Show("Выберите бюджет для удаления", "Внимание");
                 return;
             }
 

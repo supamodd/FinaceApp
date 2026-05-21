@@ -121,7 +121,7 @@ namespace FinanceApp.Views.Pages
             }
             else
             {
-                MessageBox.Show("Выберите операцию для редактирования", "Внимание");
+                ToastNotification.Show("Выберите операцию для редактирования", "Внимание");
             }
         }
 
@@ -138,7 +138,7 @@ namespace FinanceApp.Views.Pages
             }
             else
             {
-                MessageBox.Show("Выберите операцию для удаления", "Внимание");
+                ToastNotification.Show("Выберите операцию для удаления", "Внимание");
             }
         }
 

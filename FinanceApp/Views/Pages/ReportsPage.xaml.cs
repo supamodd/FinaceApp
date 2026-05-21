@@ -48,7 +48,7 @@ namespace FinanceApp.Views.Pages
         {
             if (dgReport.ItemsSource == null)
             {
-                MessageBox.Show("Сначала сформируйте отчёт", "Предупреждение");
+                ToastNotification.Show("Сначала сформируйте отчёт", "Предупреждение");
                 return;
             }
 
